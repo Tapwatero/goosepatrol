@@ -17,11 +17,37 @@ public class GooseState {
     public Vector2 position;
 
 
-    public GooseState() {
+    private static final GooseState instance  = new GooseState();
+
+    private GooseState() {
 
         position = new Vector2(-50, 0);
         direction = Direction.RIGHT;
 
     }
 
+    public static GooseState getInstance() {
+        return instance;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setPositionY(float positionY) {
+        this.position.y = positionY;
+    }
+
+    public void setPositionX(float positionX) {
+        this.position.x = positionX;
+    }
 }

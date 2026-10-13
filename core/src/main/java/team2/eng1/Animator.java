@@ -75,20 +75,7 @@ public class Animator implements ApplicationListener {
         Sprite sprite = new Sprite(currentFrame);
         sprite.setScale(3f);
 
-        sprite.setPosition(gooseState.position.x, gooseState.position.y);
-
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            gooseState.direction = Direction.LEFT;
-            gooseState.position.x -= 3f;
-        } else if  (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            gooseState.direction = Direction.RIGHT;
-            gooseState.position.x += 3f;
-        } else if  (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            gooseState.position.y += 3f;
-        }else if  (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                gooseState.position.y -= 3f;
-            }
+        sprite.setPosition(gooseState.getPosition().x, gooseState.getPosition().y);
 
 
         if (gooseState.direction == Direction.LEFT) {

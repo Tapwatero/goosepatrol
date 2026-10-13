@@ -14,6 +14,8 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
     private Texture image;
     private Texture loadingScreen;
     Animator animator;
+    MovementHandler movementHandler;
+
 
 
     @Override
@@ -22,6 +24,7 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
         image = new Texture("libgdx.png");
         loadingScreen = new Texture("loadingscreen.jpg");
         animator = new Animator();
+        movementHandler = new MovementHandler();
         animator.create();
     }
 
@@ -36,7 +39,10 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
 //        batch.draw(loadingScreen, 140, 210);
+
+        movementHandler.render();
         animator.render();
         batch.end();
     }
