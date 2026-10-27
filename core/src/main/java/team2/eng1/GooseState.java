@@ -47,12 +47,9 @@ public class GooseState {
         this.position = position;
     }
 
-    public void setPositionY(float positionY) {
-        this.position.y = positionY;
-    }
 
-    public void setPositionX(float positionX) {
-        this.position.x = positionX;
+    public void addPosition(Vector2 movementVector) {
+        this.position.add(movementVector);
     }
 
     public void setAnimationState(AnimationState animationState) {

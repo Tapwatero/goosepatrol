@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 public class MovementHandler implements ApplicationListener {
 
@@ -51,38 +52,37 @@ public class MovementHandler implements ApplicationListener {
             gooseState.setAnimationState(AnimationState.IDLE);
         }
 
+        Vector2 movementVector = new Vector2(0, 0);
 
         if (aPressed && wPressed) {
             gooseState.direction = Direction.LEFT;
-            gooseState.setPositionX(gooseState.getPosition().x - 3);
-            gooseState.setPositionY(gooseState.getPosition().y + 3);
 
-
-
+            movementVector = new Vector2(-1, 1);
         } else  if (aPressed && sPressed) {
             gooseState.direction = Direction.LEFT;
-            gooseState.setPositionX(gooseState.getPosition().x - 3);
-            gooseState.setPositionY(gooseState.getPosition().y - 3);
+            movementVector = new Vector2(-1, -1);
         }
         else  if (dPressed && wPressed) {
             gooseState.direction = Direction.RIGHT;
-            gooseState.setPositionX(gooseState.getPosition().x + 3);
-            gooseState.setPositionY(gooseState.getPosition().y + 3);
+            movementVector = new Vector2(1, 1);
         }  else  if (dPressed && sPressed) {
             gooseState.direction = Direction.RIGHT;
-            gooseState.setPositionX(gooseState.getPosition().x + 3);
-            gooseState.setPositionY(gooseState.getPosition().y - 3);
+            movementVector = new Vector2(1, -1);
         }  else if (aPressed) {
             gooseState.direction = Direction.LEFT;
-            gooseState.setPositionX(gooseState.getPosition().x - 3);
+            movementVector = new Vector2(-1, 0);
         } else if  (dPressed) {
             gooseState.direction = Direction.RIGHT;
-            gooseState.setPositionX(gooseState.getPosition().x + 3);
+            movementVector = new Vector2(1, 0);
 		} else if (wPressed) {
-            gooseState.setPositionY(gooseState.getPosition().y + 3);
+            movementVector = new Vector2(0, 1);
         }else if  (sPressed) {
-                gooseState.setPositionY(gooseState.getPosition().y - 3);
-            }
+            movementVector = new Vector2(0, -1);
+        }
+
+        movementVector.nor();
+        gooseState.addPosition(movementVector.scl(1));
+
 
 	}
 

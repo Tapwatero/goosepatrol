@@ -83,7 +83,6 @@ public class Animator implements ApplicationListener {
 
     @Override
 	public void render() {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
 		stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
 
@@ -108,6 +107,7 @@ public class Animator implements ApplicationListener {
         if (gooseState.direction == Direction.LEFT) {
             sprite.flip(true, false);
         }
+
 
         spriteBatch.begin();
         sprite.draw(spriteBatch);
