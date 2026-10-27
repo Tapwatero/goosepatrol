@@ -8,13 +8,17 @@ enum Direction {
     RIGHT
 }
 
-
+enum AnimationState {
+    IDLE,
+    WALKING,
+}
 
 
 public class GooseState {
 
     public Direction direction;
     public Vector2 position;
+    public AnimationState animationState;
 
 
     private static final GooseState instance  = new GooseState();
@@ -23,7 +27,7 @@ public class GooseState {
 
         position = new Vector2(-50, 0);
         direction = Direction.RIGHT;
-
+        animationState = AnimationState.IDLE;
     }
 
     public static GooseState getInstance() {
@@ -49,5 +53,9 @@ public class GooseState {
 
     public void setPositionX(float positionX) {
         this.position.x = positionX;
+    }
+
+    public void setAnimationState(AnimationState animationState) {
+        this.animationState = animationState;
     }
 }
