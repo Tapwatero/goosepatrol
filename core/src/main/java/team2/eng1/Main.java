@@ -55,7 +55,7 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("maps/level1.tmx");
+        map = mapLoader.load("maps/testmap.tmx");
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
 
         gameCam.position.set((gamePort.getWorldWidth() /2) + 50, (gamePort.getWorldHeight() / 2) + 50, 0);
@@ -64,7 +64,7 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
     @Override
     public void resize(int width, int height) {
         // use true here to center the camera
-        gamePort.update(width,height,false);
+        gamePort.update(width,height,true);
     }
 
 
