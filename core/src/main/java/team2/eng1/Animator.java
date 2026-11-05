@@ -101,7 +101,7 @@ public class Animator implements ApplicationListener {
         Sprite sprite = new Sprite(currentFrame);
         sprite.setScale(3f);
 
-        sprite.setPosition(gooseState.getPosition().x, gooseState.getPosition().y);
+        sprite.setPosition(275,175);
 
 
         if (gooseState.direction == Direction.LEFT) {
