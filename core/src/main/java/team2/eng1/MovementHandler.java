@@ -81,6 +81,8 @@ public class MovementHandler implements ApplicationListener {
         }
 
         movementVector.nor();
+        movementVector.x=movementVector.x*0.1f;
+        movementVector.y=movementVector.y*0.1f;
         gooseState.addPosition(movementVector.scl(1));
 
 
