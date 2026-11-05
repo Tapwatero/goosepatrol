@@ -25,7 +25,7 @@ public class GooseState {
 
     private GooseState() {
 
-        position = new Vector2(-50, 0);
+        position = new Vector2(3, 3);
         direction = Direction.RIGHT;
         animationState = AnimationState.IDLE;
     }
