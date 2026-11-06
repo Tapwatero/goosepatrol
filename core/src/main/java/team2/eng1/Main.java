@@ -28,6 +28,7 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
     private Texture loadingScreen;
     Animator animator;
     MovementHandler movementHandler;
+    SoundSystem soundSystem;
 
     // Tiled Maps Variables
     private TmxMapLoader mapLoader;
@@ -46,7 +47,9 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
         loadingScreen = new Texture("loadingscreen.jpg");
         animator = new Animator();
         movementHandler = new MovementHandler();
+        soundSystem = new SoundSystem();
         animator.create();
+        soundSystem.create();
 
         gameCam = new OrthographicCamera();
 
