@@ -52,6 +52,22 @@ public class MovementHandler implements ApplicationListener {
             gooseState.setAnimationState(AnimationState.IDLE);
         }
 
+        boolean justaPressed = Gdx.input.isKeyJustPressed(Input.Keys.A);
+        boolean justwPressed = Gdx.input.isKeyJustPressed(Input.Keys.W);
+        boolean justsPressed = Gdx.input.isKeyJustPressed(Input.Keys.S);
+        boolean justdPressed = Gdx.input.isKeyJustPressed(Input.Keys.D);
+
+
+        boolean justanythingPressed = justaPressed || justwPressed || justsPressed || justdPressed;
+
+        if (justanythingPressed) {
+            SoundSystem.footstep(true);
+        } else if (!anythingPressed) {
+            SoundSystem.footstep(false);
+        }
+
+
+
         Vector2 movementVector = new Vector2(0, 0);
 
         if (aPressed && wPressed) {
