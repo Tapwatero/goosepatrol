@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,7 +29,8 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
     private Texture loadingScreen;
     Animator animator;
     MovementHandler movementHandler;
-    SoundSystem soundSystem;
+    
+    NPCanimator npcAnimator;
 
     // Tiled Maps Variables
     private TmxMapLoader mapLoader;
@@ -39,6 +41,7 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 
 
     GooseState gooseState = GooseState.getInstance();
+    GooseState NpcState = GooseState.getInstance();
 
     @Override
     public void create() {
@@ -47,9 +50,10 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
         loadingScreen = new Texture("loadingscreen.jpg");
         animator = new Animator();
         movementHandler = new MovementHandler();
-        soundSystem = new SoundSystem();
         animator.create();
-        soundSystem.create();
+
+        npcAnimator=new NPCanimator();
+        npcAnimator.create();
 
         gameCam = new OrthographicCamera();
 
@@ -79,6 +83,8 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 //        camera.lookAt(0f, 0f, 0f);
 //        camera.update();
 
+        Vector2 oldpos=new Vector2(gameCam.position.x,gameCam.position.y);
+
         gameCam.position.set(gooseState.getPosition().x, gooseState.getPosition().y, 0);
 
         gameCam.update();
@@ -99,6 +105,8 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 
         movementHandler.render();
         animator.render();
+
+        npcAnimator.render();
         batch.end();
     }
 
