@@ -15,18 +15,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.Screen;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter implements ApplicationListener {
+public class GameScreen implements Screen {
 
+    final GoosePatrol game;
 
     public static final int V_WIDTH = 400;
     public static final int V_HEIGHT = 208;
     public static final float PPM = 100; // Scale objects
 
-    private SpriteBatch batch;
-    private Texture image;
-    private Texture loadingScreen;
     Animator animator;
     MovementHandler movementHandler;
     SoundSystem soundSystem;
@@ -44,22 +42,11 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
     GooseState gooseState = GooseState.getInstance();
     GooseState NpcState = GooseState.getInstance();
 
-    @Override
-    public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
-        loadingScreen = new Texture("loadingscreen.jpg");
-        animator = new Animator();
-        movementHandler = new MovementHandler();
-        soundSystem = new SoundSystem();
-        animator.create();
-        soundSystem.create();
+    public GameScreen(final GoosePatrol game) {
+        this.game = game;
 
         // Feel free to delete, this is just for testing the geese horde. It might be useful to have the goose horde sound playing at all times however
         SoundSystem.geeseHorde(true);
-
-        npcAnimator=new NPCanimator();
-        npcAnimator.create();
 
         gameCam = new OrthographicCamera();
 
@@ -82,7 +69,7 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 
 
     @Override
-    public void render() {
+    public void render(float delta) {
 
 //        PerspectiveCamera camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //        camera.position.set(0f, 0f, 10f);
@@ -107,18 +94,28 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
 
         mapRenderer.render();
 
-        batch.begin();
+        game.batch.begin();
 
-        movementHandler.render();
-        animator.render();
+        game.movementHandler.render();
+        game.animator.render();
 
-        npcAnimator.render();
-        batch.end();
+        game.npcAnimator.render();
+        game.batch.end();
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        image.dispose();
     }
+
+    @Override 
+    public void show() {}
+
+    @Override
+    public void hide() {}
+
+    @Override
+    public void pause() {}
+
+    @Override
+    public void resume() {}
 }
