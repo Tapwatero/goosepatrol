@@ -55,6 +55,9 @@ public class Main extends ApplicationAdapter implements ApplicationListener {
         animator.create();
         soundSystem.create();
 
+        // Feel free to delete, this is just for testing the geese horde. It might be useful to have the goose horde sound playing at all times however
+        SoundSystem.geeseHorde(true);
+
         npcAnimator=new NPCanimator();
         npcAnimator.create();
 
