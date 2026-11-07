@@ -154,7 +154,7 @@ public class SoundSystem {
     public static void footstep(boolean active) {
         if (active) {
             if(!isPlaying) {
-                id = footsteps.play(1);
+                id = footsteps.play(1.0f);
                 footsteps.setLooping(id, true);
                 isPlaying = true;
             }
@@ -164,17 +164,17 @@ public class SoundSystem {
         }
     }
 
-    public static void playSound(Sound sound, int volume) {
+    public static void playSound(Sound sound, float volume) {
         sound.play(volume);
     }
 
-    public static void playSoundRandom(ArrayList<Sound> sounds, int volume) {
+    public static void playSoundRandom(ArrayList<Sound> sounds, float volume) {
         int rand = (int) (Math.random() * sounds.size());
         Sound sound = sounds.get(rand);
         sound.play(volume);
     }
 
-    public static void playMusic(Music music, int volume) {
+    public static void playMusic(Music music, float volume) {
         music.play();
         music.setLooping(true);
         music.setVolume(volume);
