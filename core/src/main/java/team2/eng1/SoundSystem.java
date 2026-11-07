@@ -8,7 +8,12 @@ import java.util.Arrays;
 
 public class SoundSystem {
 
-    public static Sound footsteps;
+    public static Sound playerFootstep1;
+    public static Sound playerFootstep2;
+    public static Sound playerFootstep3;
+    public static Sound playerFootstep4;
+    public static Sound playerFootstep5;
+    public static Sound playerFootstep6;
     public static Sound busMove;
     public static Sound busSkid;
     public static Sound gooseCalm;
@@ -38,18 +43,22 @@ public class SoundSystem {
     public static Music gooseHorde1;
     public static Music gooseHorde2;
     public static Music gooseHorde3;
+    public static ArrayList<Sound> playerFootstep;
     public static ArrayList<Sound> gooseHiss;
     public static ArrayList<Sound> gooseHonk;
     public static ArrayList<Sound> gooseWing;
     public static ArrayList<Sound> peashooterShoot;
-    private static long id;
-    private static boolean isPlaying;
 
     public void create() {
 
 		// Load all currently used sounds
         // Player sounds are collected here
-		footsteps = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_loop.ogg"));
+		playerFootstep1 = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_1.ogg"));
+        playerFootstep2 = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_2.ogg"));
+        playerFootstep3 = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_3.ogg"));
+        playerFootstep4 = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_4.ogg"));
+        playerFootstep5 = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_5.ogg"));
+        playerFootstep6 = Gdx.audio.newSound(Gdx.files.internal("sounds/player_footstep_6.ogg"));
 
         // Bus sounds are collected here
         busMove = Gdx.audio.newSound(Gdx.files.internal("sounds/bus_movement_1.ogg"));
@@ -86,6 +95,9 @@ public class SoundSystem {
         pineappleExplode = Gdx.audio.newSound(Gdx.files.internal("sounds/item_pineapple_explode_1.ogg"));
 
         // Initialise groups of sounds for randomisation
+        playerFootstep = new ArrayList<Sound>(
+            Arrays.asList(playerFootstep1, playerFootstep2, playerFootstep3, playerFootstep4, playerFootstep5, playerFootstep6)
+        );
         gooseHiss = new ArrayList<Sound>(Arrays.asList(gooseHiss1, gooseHiss2, gooseHiss3, gooseHiss4, gooseHiss5));
         gooseHonk = new ArrayList<Sound>(
             Arrays.asList(gooseHonk1, gooseHonk2, gooseHonk3, gooseHonk4, gooseHonk5, gooseHonk6, gooseHonk7, gooseHonk8, gooseHonk9, gooseHonk10)
@@ -151,19 +163,6 @@ public class SoundSystem {
         });
 	}
 
-    public static void footstep(boolean active) {
-        if (active) {
-            if(!isPlaying) {
-                id = footsteps.play(1.0f);
-                footsteps.setLooping(id, true);
-                isPlaying = true;
-            }
-        } else {
-            footsteps.stop(id);
-            isPlaying = false;
-        }
-    }
-
     public static void playSound(Sound sound, float volume) {
         sound.play(volume);
     }
@@ -205,7 +204,12 @@ public class SoundSystem {
     }
 
 	public void dispose() {
-		footsteps.dispose();
+		playerFootstep1.dispose();
+        playerFootstep2.dispose();
+        playerFootstep3.dispose();
+        playerFootstep4.dispose();
+        playerFootstep5.dispose();
+        playerFootstep6.dispose();
         busMove.dispose();
         busSkid.dispose();
         gooseCalm.dispose();

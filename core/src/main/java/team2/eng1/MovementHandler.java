@@ -21,6 +21,9 @@ public class MovementHandler implements ApplicationListener {
 	// A variable for tracking elapsed time for the animation
 	float stateTime;
 
+    // A variable for tracking elapsed time so that footsteps don't play over themselves. May be redundant with stateTime
+    float footstepTime;
+
 	@Override
 	public void create() {
 
@@ -31,13 +34,10 @@ public class MovementHandler implements ApplicationListener {
 
     }
 
-
-
-
     @Override
 	public void render() {
 
-
+        footstepTime += Gdx.graphics.getDeltaTime();
         boolean aPressed = Gdx.input.isKeyPressed(Input.Keys.A);
         boolean wPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         boolean sPressed = Gdx.input.isKeyPressed(Input.Keys.S);
@@ -48,25 +48,13 @@ public class MovementHandler implements ApplicationListener {
 
         if (anythingPressed) {
             gooseState.setAnimationState(AnimationState.WALKING);
+            if (footstepTime > 0.5f) {
+                SoundSystem.playSoundRandom(SoundSystem.playerFootstep, 1f);
+                footstepTime = 0;
+            }
         } else {
             gooseState.setAnimationState(AnimationState.IDLE);
         }
-
-        boolean justaPressed = Gdx.input.isKeyJustPressed(Input.Keys.A);
-        boolean justwPressed = Gdx.input.isKeyJustPressed(Input.Keys.W);
-        boolean justsPressed = Gdx.input.isKeyJustPressed(Input.Keys.S);
-        boolean justdPressed = Gdx.input.isKeyJustPressed(Input.Keys.D);
-
-
-        boolean justanythingPressed = justaPressed || justwPressed || justsPressed || justdPressed;
-
-        if (justanythingPressed) {
-            SoundSystem.footstep(true);
-        } else if (!anythingPressed) {
-            SoundSystem.footstep(false);
-        }
-
-
 
         Vector2 movementVector = new Vector2(0, 0);
 
