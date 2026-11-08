@@ -16,7 +16,6 @@ public class SoundSystem {
     public static Sound playerFootstep6;
     public static Sound busMove;
     public static Sound busSkid;
-    public static Sound gooseCalm;
     public static Sound gooseEat;
     public static Sound gooseHiss1;
     public static Sound gooseHiss2;
@@ -67,7 +66,6 @@ public class SoundSystem {
         busSkid = Gdx.audio.newSound(Gdx.files.internal("sounds/bus_skid_1.ogg"));
 
         // Goose sounds are collected here
-        gooseCalm = Gdx.audio.newSound(Gdx.files.internal("sounds/goose_calm_1.ogg"));
         gooseEat = Gdx.audio.newSound(Gdx.files.internal("sounds/goose_eat_1.ogg"));
         gooseHiss1 = Gdx.audio.newSound(Gdx.files.internal("sounds/goose_hiss_1.ogg"));
         gooseHiss2 = Gdx.audio.newSound(Gdx.files.internal("sounds/goose_hiss_2.ogg"));
@@ -113,9 +111,9 @@ public class SoundSystem {
         gooseHorde3 = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/goose_horde_3.ogg"));
 
         // Quieten the geese horde noises to prevent player annoyance
-        gooseHorde1.setVolume(0.25f);
-        gooseHorde2.setVolume(0.25f);
-        gooseHorde3.setVolume(0.25f);
+        gooseHorde1.setVolume(0.1f);
+        gooseHorde2.setVolume(0.1f);
+        gooseHorde3.setVolume(0.1f);
 
         // To allow the geese horde "music" to randomise, we need to be able to tell when they end
         gooseHorde1.setOnCompletionListener(new Music.OnCompletionListener() {
@@ -234,7 +232,6 @@ public class SoundSystem {
         playerFootstep6.dispose();
         busMove.dispose();
         busSkid.dispose();
-        gooseCalm.dispose();
         gooseEat.dispose();
         gooseHiss1.dispose();
         gooseHiss2.dispose();
