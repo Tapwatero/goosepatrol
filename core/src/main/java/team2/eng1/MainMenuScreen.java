@@ -3,24 +3,11 @@ package team2.eng1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.Input;
 
 public class MainMenuScreen implements Screen {
     final GoosePatrol game;
-
-    // Tiled Maps Variables
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-    private OrthoCachedTiledMapRenderer mapRenderer;
-    private OrthographicCamera gameCam;
-    private Viewport gamePort;
 
 
     GooseState gooseState = GooseState.getInstance();
@@ -40,10 +27,10 @@ public class MainMenuScreen implements Screen {
 		game.batch.begin();
 		//draw text. Remember that x and y are in meters
 		game.font.draw(game.batch, "Welcome to Goose Patrol!!! ", 1, 1.5f);
-		game.font.draw(game.batch, "Tap anywhere to begin!", 1, 1);
+		game.font.draw(game.batch, "Press the spacebar to begin!", 1, 1);
 		game.batch.end();
 
-		if (Gdx.input.isTouched()) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			game.setScreen(new GameScreen(game));
 			dispose();
 		}

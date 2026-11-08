@@ -49,6 +49,8 @@ public class SoundSystem {
     public static ArrayList<Sound> gooseWing;
     public static ArrayList<Sound> peashooterShoot;
 
+    private static int currentlyPlaying = 0;
+
     public void create() {
 
 		// Load all currently used sounds
@@ -184,8 +186,21 @@ public class SoundSystem {
     // This is not implemented yet, nor is it a need to have feature.
     public static void geeseHorde(boolean active) {
         if (active) {
-            int random = (int) (Math.random() * 3) + 1;
-            switch (random) {
+            switch (currentlyPlaying) {
+                case 0:
+                    int random = (int) (Math.random() * 3) + 1;
+                    switch (random) {
+                        case 1:
+                            gooseHorde1.play();
+                            break;
+                        case 2:
+                            gooseHorde2.play();
+                            break;
+                        case 3:
+                            gooseHorde3.play();
+                            break;
+                    }
+                    break;
                 case 1:
                     gooseHorde1.play();
                     break;
@@ -197,9 +212,16 @@ public class SoundSystem {
                     break;
             }
         } else {
-            gooseHorde1.stop();
-            gooseHorde2.stop();
-            gooseHorde3.stop();
+            if (gooseHorde1.isPlaying()) {
+                gooseHorde1.pause();
+                currentlyPlaying = 1;
+            } else if (gooseHorde2.isPlaying()) {
+                gooseHorde2.pause();
+                currentlyPlaying = 2;
+            } else if (gooseHorde3.isPlaying()) {
+                gooseHorde3.pause();
+                currentlyPlaying = 3;
+            }
         }
     }
 
