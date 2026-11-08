@@ -3,12 +3,6 @@ package team2.eng1;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class MovementHandler implements ApplicationListener {
@@ -16,7 +10,7 @@ public class MovementHandler implements ApplicationListener {
 	// Constant rows and columns of the sprite sheet
 	private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
 
-    GooseState gooseState = GooseState.getInstance();
+    ActorState playerState = ActorState.getInstance();
 
 	// A variable for tracking elapsed time for the animation
 	float stateTime;
@@ -47,36 +41,36 @@ public class MovementHandler implements ApplicationListener {
         boolean anythingPressed = aPressed || wPressed || sPressed || dPressed;
 
         if (anythingPressed) {
-            gooseState.setAnimationState(AnimationState.WALKING);
+            playerState.setAnimationState(AnimationState.WALKING);
             if (footstepTime > 0.5f) {
                 SoundSystem.playSoundRandom(SoundSystem.playerFootstep, 1f);
                 footstepTime = 0;
             }
         } else {
-            gooseState.setAnimationState(AnimationState.IDLE);
+            playerState.setAnimationState(AnimationState.IDLE);
         }
 
         Vector2 movementVector = new Vector2(0, 0);
 
         if (aPressed && wPressed) {
-            gooseState.direction = Direction.LEFT;
+            playerState.direction = Direction.LEFT;
 
             movementVector = new Vector2(-1, 1);
         } else  if (aPressed && sPressed) {
-            gooseState.direction = Direction.LEFT;
+            playerState.direction = Direction.LEFT;
             movementVector = new Vector2(-1, -1);
         }
         else  if (dPressed && wPressed) {
-            gooseState.direction = Direction.RIGHT;
+            playerState.direction = Direction.RIGHT;
             movementVector = new Vector2(1, 1);
         }  else  if (dPressed && sPressed) {
-            gooseState.direction = Direction.RIGHT;
+            playerState.direction = Direction.RIGHT;
             movementVector = new Vector2(1, -1);
         }  else if (aPressed) {
-            gooseState.direction = Direction.LEFT;
+            playerState.direction = Direction.LEFT;
             movementVector = new Vector2(-1, 0);
         } else if  (dPressed) {
-            gooseState.direction = Direction.RIGHT;
+            playerState.direction = Direction.RIGHT;
             movementVector = new Vector2(1, 0);
 		} else if (wPressed) {
             movementVector = new Vector2(0, 1);
@@ -87,7 +81,7 @@ public class MovementHandler implements ApplicationListener {
         movementVector.nor();
         movementVector.x=movementVector.x*0.1f;
         movementVector.y=movementVector.y*0.1f;
-        gooseState.addPosition(movementVector.scl(1));
+        playerState.addPosition(movementVector.scl(1));
 
 
 	}

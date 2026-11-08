@@ -2,14 +2,11 @@ package team2.eng1;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.w3c.dom.Text;
 
 public class Animator implements ApplicationListener {
 
@@ -17,7 +14,7 @@ public class Animator implements ApplicationListener {
 	private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
 
 
-    GooseState gooseState = GooseState.getInstance();
+    ActorState actorState = ActorState.getInstance();
 
 
 	// Objects used
@@ -90,7 +87,7 @@ public class Animator implements ApplicationListener {
 
         TextureRegion currentFrame;
 
-        if (gooseState.animationState == AnimationState.WALKING) {
+        if (actorState.animationState == AnimationState.WALKING) {
              currentFrame = walkAnimation.getKeyFrame(stateTime, true);
         } else {
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -104,7 +101,7 @@ public class Animator implements ApplicationListener {
         sprite.setPosition(275,175);
 
 
-        if (gooseState.direction == Direction.LEFT) {
+        if (actorState.direction == Direction.LEFT) {
             sprite.flip(true, false);
         }
 

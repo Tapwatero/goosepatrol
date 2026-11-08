@@ -9,10 +9,6 @@ import com.badlogic.gdx.Input;
 public class MainMenuScreen implements Screen {
     final GoosePatrol game;
 
-
-    GooseState gooseState = GooseState.getInstance();
-    GooseState NpcState = GooseState.getInstance();
-
 	public MainMenuScreen(final GoosePatrol game) {
 		this.game = game;
 	}

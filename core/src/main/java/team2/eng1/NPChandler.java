@@ -1,14 +1,6 @@
 package team2.eng1;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class NPChandler implements ApplicationListener {
@@ -17,7 +9,6 @@ public class NPChandler implements ApplicationListener {
 	private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
 
     Vector2 position;
-    GooseState playerState = GooseState.getInstance();
 
 	// A variable for tracking elapsed time for the animation
 	float stateTime;

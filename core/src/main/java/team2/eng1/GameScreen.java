@@ -34,8 +34,8 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
 
 
-    GooseState gooseState = GooseState.getInstance();
-    GooseState NpcState = GooseState.getInstance();
+    ActorState playerState = ActorState.getInstance();
+    ActorState NpcState = ActorState.getInstance();
 
     public GameScreen(final GoosePatrol game) {
         this.game = game;
@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
 
         Vector2 oldpos=new Vector2(gameCam.position.x,gameCam.position.y);
 
-        gameCam.position.set(gooseState.getPosition().x, gooseState.getPosition().y, 0);
+        gameCam.position.set(playerState.getPosition().x, playerState.getPosition().y, 0);
 
         gameCam.update();
 

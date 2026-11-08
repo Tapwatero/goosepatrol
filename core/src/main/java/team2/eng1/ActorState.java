@@ -14,23 +14,23 @@ enum AnimationState {
 }
 
 
-public class GooseState {
+public class ActorState {
 
     public Direction direction;
     public Vector2 position;
     public AnimationState animationState;
 
 
-    private static final GooseState instance  = new GooseState();
+    private static final ActorState instance  = new ActorState();
 
-    private GooseState() {
+    private ActorState() {
 
         position = new Vector2(3, 3);
         direction = Direction.RIGHT;
         animationState = AnimationState.IDLE;
     }
 
-    public static GooseState getInstance() {
+    public static ActorState getInstance() {
         return instance;
     }
 
