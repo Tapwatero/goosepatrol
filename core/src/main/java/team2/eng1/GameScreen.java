@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
 
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("maps/testmap.tmx");
+        map = mapLoader.load("maps/campus_east.tmx");
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
 
         gameCam.position.set((gamePort.getWorldWidth() /2) + 50, (gamePort.getWorldHeight() / 2) + 50, 0);
