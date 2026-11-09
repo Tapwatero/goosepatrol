@@ -14,25 +14,26 @@ enum AnimationState {
 }
 
 
-public class ActorState {
+// Both Individual Geese and the Player are actors, the GeeseHoard is essentially a wrapper on an array of geese actors
+
+public abstract class AbstractActorState {
 
     public Direction direction;
     public Vector2 position;
     public AnimationState animationState;
 
 
-    private static final ActorState instance  = new ActorState();
+//    private static final ActorState instance  = new ActorState();
+//
+//    public ActorState() {
+//        position = new Vector2(3, 3);
+//        direction = Direction.RIGHT;
+//        animationState = AnimationState.IDLE;
+//    }
 
-    private ActorState() {
-
-        position = new Vector2(3, 3);
-        direction = Direction.RIGHT;
-        animationState = AnimationState.IDLE;
-    }
-
-    public static ActorState getInstance() {
-        return instance;
-    }
+//    public static ActorState getInstance() {
+//        return instance;
+//    }
 
     public Direction getDirection() {
         return direction;

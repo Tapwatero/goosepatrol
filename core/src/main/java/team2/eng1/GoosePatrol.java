@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 
 public class GoosePatrol extends Game {
 
@@ -14,35 +16,40 @@ public class GoosePatrol extends Game {
     public static final int V_HEIGHT = 208;
     public static final float PPM = 100; // Scale objects
 
-    public SpriteBatch batch;
     public BitmapFont font;
     public FitViewport viewport;
     private Texture image;
     private Texture loadingScreen;
-    Animator animator;
+    PlayerAnimator playerAnimator;
     MovementHandler movementHandler;
     SoundSystem soundSystem;
-    NPCanimator npcAnimator;
 
 	public void create() {
-        batch = new SpriteBatch();
         image = new Texture("libgdx.png");
         loadingScreen = new Texture("loadingscreen.jpg");
-        animator = new Animator();
+
+
+        ArrayList<AnimationSheet> animationSheets = new ArrayList<>();
+        animationSheets.add(new AnimationSheet(AnimationId.Idle, 0.25f, 2,1));
+        animationSheets.add(new AnimationSheet(AnimationId.Walk, 0.25f, 4,1));
+
+        playerAnimator = new PlayerAnimator(animationSheets);
+
+
         movementHandler = new MovementHandler();
         soundSystem = new SoundSystem();
-        npcAnimator=new NPCanimator();
-        animator.create();
+//        npcAnimator=new NPCanimator();
+        playerAnimator.create();
         soundSystem.create();
-        npcAnimator.create();
+//        npcAnimator.create();
 		// use libGDX's default font
 		font = new BitmapFont();
 		viewport = new FitViewport(8, 5);
-		
-		//font has 15pt, but we need to scale it to our viewport by ratio of viewport height to screen height 
+
+		//font has 15pt, but we need to scale it to our viewport by ratio of viewport height to screen height
 		font.setUseIntegerPositions(false);
 		font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
-		
+
 		this.setScreen(new MainMenuScreen(this));
 	}
 
@@ -51,7 +58,6 @@ public class GoosePatrol extends Game {
 	}
 
 	public void dispose() {
-		batch.dispose();
 		font.dispose();
         image.dispose();
 	}

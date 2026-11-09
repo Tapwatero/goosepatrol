@@ -8,9 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 public class MovementHandler implements ApplicationListener {
 
 	// Constant rows and columns of the sprite sheet
-	private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
 
-    ActorState playerState = ActorState.getInstance();
+    PlayerActorState playerState = PlayerActorState.getInstance();
 
 	// A variable for tracking elapsed time for the animation
 	float stateTime;
@@ -79,11 +78,9 @@ public class MovementHandler implements ApplicationListener {
         }
 
         movementVector.nor();
-        movementVector.x=movementVector.x*0.1f;
-        movementVector.y=movementVector.y*0.1f;
+        movementVector.x=movementVector.x*0.02f;
+        movementVector.y=movementVector.y*0.02f;
         playerState.addPosition(movementVector.scl(1));
-
-
 	}
 
     @Override

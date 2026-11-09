@@ -1,9 +1,11 @@
 package team2.eng1;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
@@ -23,10 +25,11 @@ public class GameScreen implements Screen {
     Animator animator;
     MovementHandler movementHandler;
     SoundSystem soundSystem;
-    
-    NPCanimator npcAnimator;
+
+//    NPCanimator npcAnimator;
 
     // Tiled Maps Variables
+    SpriteBatch spriteBatch = GameState.getInstance().batch;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthoCachedTiledMapRenderer mapRenderer;
@@ -34,11 +37,12 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
 
 
-    ActorState playerState = ActorState.getInstance();
-    ActorState NpcState = ActorState.getInstance();
+    PlayerActorState playerState = PlayerActorState.getInstance();
+
 
     public GameScreen(final GoosePatrol game) {
         this.game = game;
+
 
         // Feel free to delete, this is just for testing the geese horde. It might be useful to have the goose horde sound playing at all times however
         SoundSystem.geeseHorde(true);
@@ -71,13 +75,16 @@ public class GameScreen implements Screen {
 //        camera.lookAt(0f, 0f, 0f);
 //        camera.update();
 
-        Vector2 oldpos=new Vector2(gameCam.position.x,gameCam.position.y);
+        gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y, 0);
 
-        gameCam.position.set(playerState.getPosition().x, playerState.getPosition().y, 0);
+        System.out.println(gameCam.position);
+        System.out.println(playerState.getPosition());
+//        gameCam.position.y = playerState.getPosition().y+1;
+//        gameCam.position.x = playerState.getPosition().x+1;
+
+
 
         gameCam.update();
-
-        mapRenderer.setView(gameCam);
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -89,26 +96,28 @@ public class GameScreen implements Screen {
 		}
 
 
-//
+        spriteBatch.setProjectionMatrix(gameCam.combined);
 
 //        batch.draw(loadingScreen, 140, 210);
 
+        mapRenderer.setView(gameCam);
         mapRenderer.render();
 
-        game.batch.begin();
+        spriteBatch.begin();
+
 
         game.movementHandler.render();
-        game.animator.render();
+//        game.npcAnimator.render();
+        game.playerAnimator.render();
 
-        game.npcAnimator.render();
-        game.batch.end();
+        spriteBatch.end();
     }
 
     @Override
     public void dispose() {
     }
 
-    @Override 
+    @Override
     public void show() {}
 
     @Override

@@ -9,8 +9,11 @@ public class NPChandler implements ApplicationListener {
 	private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
 
     Vector2 position;
+    GeeseActorState actorState = GeeseActorState.getInstance();
+    PlayerActorState playerState = PlayerActorState.getInstance();
 
-	// A variable for tracking elapsed time for the animation
+
+    // A variable for tracking elapsed time for the animation
 	float stateTime;
 
     boolean inAggro=false;
@@ -19,27 +22,11 @@ public class NPChandler implements ApplicationListener {
 
 	@Override
 	public void create() {
-        Vector2 spawnpoint= new Vector2(2,2);
-        setPosition(spawnpoint);
 	}
 
     @Override
     public void resize(int width, int height) {
 
-    }
-
-    public Vector2 getPosition() {
-        return position;
-    }
-
-
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
-
-    public void addPosition(Vector2 movementVector) {
-        this.position.add(movementVector);
     }
 
 
@@ -51,15 +38,22 @@ public class NPChandler implements ApplicationListener {
         // } else {
         //     npcState.setAnimationState(AnimationState.IDLE);
         // }
-        Vector2 destination = new Vector2(275,175);
-        Vector2 movementVector = new Vector2(destination.x-getPosition().x,destination.y-getPosition().y);
 
-        movementVector.nor();
-        movementVector.x=movementVector.x*speed;
-        movementVector.y=movementVector.y*speed;
-        addPosition(movementVector.scl(1));
+        moveToPlayer();
 
 	}
+
+
+    public void moveToPlayer() {
+        Vector2 destination = playerState.getPosition();
+        Vector2 npcPosition = actorState.getPosition();
+        System.out.println("npc: " + npcPosition);
+        System.out.println("player: " + destination);
+
+        Vector2 movementVector = new Vector2(destination.x-npcPosition.x,destination.y-npcPosition.y);
+
+        movementVector.nor();
+    }
 
     @Override
     public void pause() {
