@@ -40,7 +40,7 @@ public class PlayerAnimator extends Animator {
 
 
         Sprite sprite = new Sprite(currentFrame);
-        sprite.setScale(3f);
+        sprite.setScale(20f);
 
         sprite.setPosition(275,175);
 
@@ -49,7 +49,8 @@ public class PlayerAnimator extends Animator {
             sprite.flip(true, false);
         }
 
-        spriteBatch.draw(sprite, playerState.getPosition().x, playerState.getPosition().y, 1f, 1f);
+
+        spriteBatch.draw(sprite, playerState.getPosition().x, playerState.getPosition().y, 40f, 40f);
 	}
 
 

@@ -20,7 +20,7 @@ public class GameScreen implements Screen {
 
     public static final int V_WIDTH = 400;
     public static final int V_HEIGHT = 208;
-    public static final float PPM = 100; // Scale objects
+    public static final float PPM = 2; // Scale objects
 
     Animator animator;
     MovementHandler movementHandler;
@@ -75,12 +75,11 @@ public class GameScreen implements Screen {
 //        camera.lookAt(0f, 0f, 0f);
 //        camera.update();
 
-        gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y, 0);
+        System.out.println(gamePort.getWorldHeight());
+        gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
-        System.out.println(gameCam.position);
-        System.out.println(playerState.getPosition());
-//        gameCam.position.y = playerState.getPosition().y+1;
-//        gameCam.position.x = playerState.getPosition().x+1;
+
+        System.out.println(playerState.getPosition().y);
 
 
 

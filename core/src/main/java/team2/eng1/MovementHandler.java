@@ -78,8 +78,8 @@ public class MovementHandler implements ApplicationListener {
         }
 
         movementVector.nor();
-        movementVector.x=movementVector.x*0.02f;
-        movementVector.y=movementVector.y*0.02f;
+        movementVector.x=movementVector.x;
+        movementVector.y=movementVector.y;
         playerState.addPosition(movementVector.scl(1));
 	}
 
