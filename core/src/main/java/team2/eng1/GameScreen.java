@@ -18,8 +18,8 @@ public class GameScreen implements Screen {
 
     final GoosePatrol game;
 
-    public static final int V_WIDTH = 400;
-    public static final int V_HEIGHT = 208;
+    public static final int V_WIDTH = 295;
+    public static final int V_HEIGHT = 185;
     public static final float PPM = 2; // Scale objects
 
     Animator animator;

@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import team2.eng1.AnimationSheet;
 
 
 
@@ -26,21 +25,36 @@ public class Animator implements ApplicationListener {
 
 	// A variable for tracking elapsed time for the animation
 
-    private TextureRegion[] sheetToFrames(Texture sheet, int cols, int rows) {
+    private TextureRegion[] sheetToFrames(Texture sheet, AnimationSheet animationSheet) {
+
+        int cols = animationSheet.getSheetCols();
+        int rows = animationSheet.getSheetRows();
+        int totalFrames = animationSheet.getTotalFrames()-1;
+
         TextureRegion[][] tmp = TextureRegion.split(sheet,
             sheet.getWidth() / cols,
             sheet.getHeight() / rows);
 
         // Place the regions into a 1D array in the correct order, starting from the top
         // left, going across first. The Animation constructor requires a 1D array.
-        TextureRegion[] frames = new TextureRegion[cols * rows];
+        TextureRegion[] frames = new TextureRegion[totalFrames+1];
         int index = 0;
+
+        int frameCounter = 1;
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 frames[index++] = tmp[i][j];
+
+                if (frameCounter > totalFrames) {
+                    break;
+                }
+
+                frameCounter++;
             }
         }
 
+        System.out.println(frames.length);
         return frames;
     }
 
@@ -57,7 +71,7 @@ public class Animator implements ApplicationListener {
         for (AnimationSheet animationSheet : animationSheets) {
 
             Texture texture = new Texture(Gdx.files.internal(String.format("%s.png", animationSheet.getAnimationId())));
-            Animation<TextureRegion> animation = new Animation<TextureRegion>(animationSheet.getFrameDuration(), sheetToFrames(texture, animationSheet.getSheetCols(), animationSheet.getSheetRows()));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(animationSheet.getFrameDuration(), sheetToFrames(texture, animationSheet));
 
             frameMap.put(animationSheet.getAnimationId(), animation);
         }

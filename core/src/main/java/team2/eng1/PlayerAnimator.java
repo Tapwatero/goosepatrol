@@ -32,9 +32,42 @@ public class PlayerAnimator extends Animator {
         TextureRegion currentFrame;
 
         if (playerState.animationState == AnimationState.WALKING) {
-             currentFrame = frameMap.get(AnimationId.Walk).getKeyFrame(stateTime, true);
+
+            AnimationId animationId = AnimationId.UpWalkPlayer;
+
+            switch (playerState.direction) {
+                case UP:
+                    animationId = AnimationId.UpWalkPlayer;
+                    break;
+                case DOWN:
+                    animationId = AnimationId.DownWalkPlayer;
+                    break;
+                case LEFT:
+                case RIGHT:
+                    animationId = AnimationId.SideWalkPlayer;
+                    break;
+            }
+
+            currentFrame = frameMap.get(animationId).getKeyFrame(stateTime, true);
         } else {
-            currentFrame = frameMap.get(AnimationId.Idle).getKeyFrame(stateTime, true);
+
+            AnimationId animationId = AnimationId.UpWalkPlayer;
+
+            switch (playerState.direction) {
+                case UP:
+                    animationId = AnimationId.UpIdlePlayer;
+                    break;
+                case DOWN:
+                    animationId = AnimationId.DownIdlePlayer;
+                    break;
+                case LEFT:
+                case RIGHT:
+                    animationId = AnimationId.SideIdlePlayer;
+                    break;
+            }
+
+            System.out.println(animationId);
+            currentFrame = frameMap.get(animationId).getKeyFrame(stateTime, true);
         }
 
 
@@ -45,7 +78,9 @@ public class PlayerAnimator extends Animator {
         sprite.setPosition(275,175);
 
 
-        if (playerState.direction == Direction.LEFT) {
+
+
+        if (playerState.direction == Direction.RIGHT) {
             sprite.flip(true, false);
         }
 

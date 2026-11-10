@@ -72,8 +72,10 @@ public class MovementHandler implements ApplicationListener {
             playerState.direction = Direction.RIGHT;
             movementVector = new Vector2(1, 0);
 		} else if (wPressed) {
+            playerState.direction = Direction.UP;
             movementVector = new Vector2(0, 1);
         }else if  (sPressed) {
+            playerState.direction = Direction.DOWN;
             movementVector = new Vector2(0, -1);
         }
 

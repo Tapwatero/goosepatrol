@@ -30,12 +30,22 @@ public class GoosePatrol extends Game {
         image = new Texture("libgdx.png");
         loadingScreen = new Texture("loadingscreen.jpg");
 
-        ArrayList<AnimationSheet> animationSheets = new ArrayList<>();
-        animationSheets.add(new AnimationSheet(AnimationId.Idle, 0.25f, 2,1));
-        animationSheets.add(new AnimationSheet(AnimationId.Walk, 0.25f, 4,1));
+        ArrayList<AnimationSheet> animationSheetsGeese = new ArrayList<>();
+        animationSheetsGeese.add(new AnimationSheet(AnimationId.Idle, 0.25f, 2,1, 2));
+        animationSheetsGeese.add(new AnimationSheet(AnimationId.Walk, 0.25f, 4,1, 4));
 
-        playerAnimator = new PlayerAnimator(animationSheets);
-        geeseAnimator = new GeeseAnimator(animationSheets);
+        ArrayList<AnimationSheet> animationSheetsPlayer = new ArrayList<>();
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.SideIdlePlayer, 0.25f, 4,2, 5));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.SideWalkPlayer, 0.25f, 4,2, 6));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.UpIdlePlayer, 0.25f, 4,2, 5));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.DownIdlePlayer, 0.25f, 4,2, 5));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.UpWalkPlayer, 0.25f, 4,2, 6));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.DownWalkPlayer, 0.25f, 4,2, 6));
+
+
+
+        playerAnimator = new PlayerAnimator(animationSheetsPlayer);
+        geeseAnimator = new GeeseAnimator(animationSheetsGeese);
 
 
 

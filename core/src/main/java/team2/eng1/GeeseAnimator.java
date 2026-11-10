@@ -47,6 +47,7 @@ public class GeeseAnimator extends Animator {
 
 
 
+
             Sprite sprite = new Sprite(currentFrame);
 
 

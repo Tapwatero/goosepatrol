@@ -13,7 +13,7 @@ public class GeeseActorState extends AbstractActorState {
     public GeeseActorState(Vector2 startingPosition) {
         setPosition(startingPosition);
         direction = Direction.RIGHT;
-        animationState = AnimationState.IDLE;
+        animationState = AnimationState.WALKING;
     }
 
 }

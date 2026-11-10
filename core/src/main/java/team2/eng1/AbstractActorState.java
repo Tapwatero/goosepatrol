@@ -4,6 +4,8 @@ package team2.eng1;
 import com.badlogic.gdx.math.Vector2;
 
 enum Direction {
+    UP,
+    DOWN,
     LEFT,
     RIGHT
 }
