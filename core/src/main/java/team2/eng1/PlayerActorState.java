@@ -10,11 +10,21 @@ public class PlayerActorState extends AbstractActorState {
 
 
     private static final PlayerActorState instance  = new PlayerActorState();
+    private float health;
 
     public PlayerActorState() {
         setPosition(new Vector2(50  , 50));
+        health = 1;
         direction = Direction.RIGHT;
         animationState = AnimationState.IDLE;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float newHealth) {
+        this.health = newHealth;
     }
 
     public static PlayerActorState getInstance() {

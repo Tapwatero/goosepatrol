@@ -16,7 +16,8 @@ import java.util.HashMap;
 public class Animator implements ApplicationListener {
 
 
-    ArrayList<team2.eng1.AnimationSheet> animationSheets;
+    ArrayList<AnimationSheet> animationSheets;
+    //a
     HashMap<AnimationId, Animation<TextureRegion>> frameMap = new HashMap<>();
 
 

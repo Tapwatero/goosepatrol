@@ -16,4 +16,6 @@ public class GeeseActorState extends AbstractActorState {
         animationState = AnimationState.WALKING;
     }
 
+
+
 }

@@ -41,6 +41,10 @@ public abstract class AbstractActorState {
         return direction;
     }
 
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
     public Vector2 getPosition() {
         return position;
     }

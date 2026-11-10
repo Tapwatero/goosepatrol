@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
@@ -26,6 +27,7 @@ public class GameScreen implements Screen {
     MovementHandler movementHandler;
     SoundSystem soundSystem;
     ItemBar itemBar;
+    HealthBar healthBar;
 
 //    NPCanimator npcAnimator;
 
@@ -36,6 +38,8 @@ public class GameScreen implements Screen {
     private OrthoCachedTiledMapRenderer mapRenderer;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
+
+    ShapeRenderer shapeRenderer;
 
     GeeseHoard geeseHoard = GeeseHoard.getInstance();
 
@@ -50,6 +54,7 @@ public class GameScreen implements Screen {
         // Feel free to delete, this is just for testing the geese horde. It might be useful to have the goose horde sound playing at all times however
         SoundSystem.geeseHorde(true);
 
+        shapeRenderer = new ShapeRenderer();
         gameCam = new OrthographicCamera();
 
 
@@ -60,6 +65,8 @@ public class GameScreen implements Screen {
         map = mapLoader.load("maps/campus_east.tmx");
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
         itemBar = new ItemBar();
+        healthBar = new HealthBar();
+
 
         gameCam.position.set((gamePort.getWorldWidth() /2) + 50, (gamePort.getWorldHeight() / 2) + 50, 0);
     }
@@ -115,6 +122,8 @@ public class GameScreen implements Screen {
         itemBar.render(gameCam.position.x,gameCam.position.y);
 
         spriteBatch.end();
+        healthBar.draw(shapeRenderer);
+
     }
 
     @Override

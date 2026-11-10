@@ -66,17 +66,12 @@ public class PlayerAnimator extends Animator {
                     break;
             }
 
-            System.out.println(animationId);
             currentFrame = frameMap.get(animationId).getKeyFrame(stateTime, true);
         }
 
 
 
         Sprite sprite = new Sprite(currentFrame);
-        sprite.setScale(20f);
-
-        sprite.setPosition(275,175);
-
 
 
 

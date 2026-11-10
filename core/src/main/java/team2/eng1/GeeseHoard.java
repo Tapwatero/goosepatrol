@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeeseHoard {
@@ -49,14 +50,33 @@ public class GeeseHoard {
 
         Vector2 destination = playerState.getPosition();
 
+        List<GeeseActorState> toRemove = new ArrayList<GeeseActorState>();
+
         this.hoardMembers.forEach(hoardMember -> {
             Vector2 npcPosition = hoardMember.getPosition();
 
 
-            Vector2 movementVector = new Vector2(destination.x-npcPosition.x,destination.y-npcPosition.y);
+            Vector2 movementVector = new Vector2(destination.x-npcPosition.x,destination.y-(npcPosition.y+5)  );
+
+
+            // Collision Logic
+            if (Math.hypot(movementVector.x, movementVector.y) < 5) {
+                playerState.setHealth((float) (playerState.getHealth()-0.25));
+                toRemove.add(hoardMember);
+            }
+
+
             movementVector.nor();
             movementVector.scl(0.2f);
+
+            hoardMember.setDirection(movementVector.x < 0 ? Direction.LEFT : Direction.RIGHT);
+
+
             hoardMember.addPosition(movementVector);
+        });
+
+        toRemove.forEach(geeseActorState -> {
+            hoardMembers.remove(geeseActorState);
         });
 
 
