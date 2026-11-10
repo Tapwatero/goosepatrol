@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
     Animator animator;
     MovementHandler movementHandler;
     SoundSystem soundSystem;
+    ItemBar itemBar;
 
 //    NPCanimator npcAnimator;
 
@@ -58,6 +59,7 @@ public class GameScreen implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("maps/campus_east.tmx");
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
+        itemBar = new ItemBar();
 
         gameCam.position.set((gamePort.getWorldWidth() /2) + 50, (gamePort.getWorldHeight() / 2) + 50, 0);
     }
@@ -105,11 +107,12 @@ public class GameScreen implements Screen {
 
         spriteBatch.begin();
 
-
         game.movementHandler.render();
         game.geeseAnimator.render();
 //        game.npcAnimator.render();
         game.playerAnimator.render();
+
+        itemBar.render(gameCam.position.x,gameCam.position.y);
 
         spriteBatch.end();
     }
