@@ -36,6 +36,8 @@ public class GameScreen implements Screen {
     private OrthographicCamera gameCam;
     private Viewport gamePort;
 
+    GeeseHoard geeseHoard = GeeseHoard.getInstance();
+
 
     PlayerActorState playerState = PlayerActorState.getInstance();
 
@@ -75,11 +77,10 @@ public class GameScreen implements Screen {
 //        camera.lookAt(0f, 0f, 0f);
 //        camera.update();
 
-        System.out.println(gamePort.getWorldHeight());
+        geeseHoard.update();
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
 
-        System.out.println(playerState.getPosition().y);
 
 
 
@@ -106,6 +107,7 @@ public class GameScreen implements Screen {
 
 
         game.movementHandler.render();
+        game.geeseAnimator.render();
 //        game.npcAnimator.render();
         game.playerAnimator.render();
 

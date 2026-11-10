@@ -9,15 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 public class GeeseActorState extends AbstractActorState {
 
 
-    private static final GeeseActorState instance  = new GeeseActorState();
 
-    public GeeseActorState() {
-        setPosition(new Vector2(0, 0));
+    public GeeseActorState(Vector2 startingPosition) {
+        setPosition(startingPosition);
         direction = Direction.RIGHT;
         animationState = AnimationState.IDLE;
     }
 
-    public static GeeseActorState getInstance() {
-        return instance;
-    }
 }

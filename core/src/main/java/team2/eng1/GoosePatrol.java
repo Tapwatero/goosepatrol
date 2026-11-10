@@ -20,6 +20,8 @@ public class GoosePatrol extends Game {
     public FitViewport viewport;
     private Texture image;
     private Texture loadingScreen;
+
+    GeeseAnimator geeseAnimator;
     PlayerAnimator playerAnimator;
     MovementHandler movementHandler;
     SoundSystem soundSystem;
@@ -28,20 +30,23 @@ public class GoosePatrol extends Game {
         image = new Texture("libgdx.png");
         loadingScreen = new Texture("loadingscreen.jpg");
 
-
         ArrayList<AnimationSheet> animationSheets = new ArrayList<>();
         animationSheets.add(new AnimationSheet(AnimationId.Idle, 0.25f, 2,1));
         animationSheets.add(new AnimationSheet(AnimationId.Walk, 0.25f, 4,1));
 
         playerAnimator = new PlayerAnimator(animationSheets);
+        geeseAnimator = new GeeseAnimator(animationSheets);
+
 
 
         movementHandler = new MovementHandler();
         soundSystem = new SoundSystem();
-//        npcAnimator=new NPCanimator();
+
+        geeseAnimator.create();
         playerAnimator.create();
         soundSystem.create();
-//        npcAnimator.create();
+
+
 		// use libGDX's default font
 		font = new BitmapFont();
 		viewport = new FitViewport(8, 5);
