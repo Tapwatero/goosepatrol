@@ -72,22 +72,29 @@ public class GeeseHorde {
                 toRemove.add(hordeMember);
             }
 
-            if(hordeMember.gooseHitbox.overlaps(GameScreen.topWall)) {
-                movementVector = new Vector2(x-npcx-5, MathUtils.clamp(y-npcy-5, (float) Double.NEGATIVE_INFINITY, 0f));
+            for (Rectangle topWall : GameScreen.topWalls) {
+                if(hordeMember.gooseHitbox.overlaps(topWall)) {
+                    movementVector = new Vector2(x-npcx-5, MathUtils.clamp(y-npcy-5, (float) Double.NEGATIVE_INFINITY, 0f));
+                }
             }
 
-            if(hordeMember.gooseHitbox.overlaps(GameScreen.leftWall)) {
-                movementVector = new Vector2(MathUtils.clamp(x-npcx-5, 0f, (float) Double.POSITIVE_INFINITY), y-npcy-5);
+            for (Rectangle leftWall : GameScreen.leftWalls) {
+                if(hordeMember.gooseHitbox.overlaps(leftWall)) {
+                    movementVector = new Vector2(MathUtils.clamp(x-npcx-5, 0f, (float) Double.POSITIVE_INFINITY), y-npcy-5);
+                }
             }
 
-            if(hordeMember.gooseHitbox.overlaps(GameScreen.bottomWall)) {
-                movementVector = new Vector2(x-npcx-5, MathUtils.clamp(y-npcy-5, 0f, (float) Double.POSITIVE_INFINITY));
+            for (Rectangle bottomWall : GameScreen.bottomWalls) {
+                if(hordeMember.gooseHitbox.overlaps(bottomWall)) {
+                    movementVector = new Vector2(x-npcx-5, MathUtils.clamp(y-npcy-5, 0f, (float) Double.POSITIVE_INFINITY));
+                }
             }
 
-            if(hordeMember.gooseHitbox.overlaps(GameScreen.rightWall)) {
-                movementVector = new Vector2(MathUtils.clamp(x-npcx-5, (float) Double.NEGATIVE_INFINITY, 0f), y-npcy-5);
+            for (Rectangle rightWall : GameScreen.rightWalls) {
+                if(hordeMember.gooseHitbox.overlaps(rightWall)) {
+                    movementVector = new Vector2(MathUtils.clamp(x-npcx-5, (float) Double.NEGATIVE_INFINITY, 0f), y-npcy-5);
+                }
             }
-
 
             movementVector.nor();
             movementVector.scl(0.2f);

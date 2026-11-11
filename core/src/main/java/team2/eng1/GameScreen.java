@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameScreen implements Screen {
 
@@ -52,10 +54,10 @@ public class GameScreen implements Screen {
     public static int mapHeight;
 
     public static Rectangle playerHitbox;
-    public static Rectangle topWall;
-    public static Rectangle leftWall;
-    public static Rectangle bottomWall;
-    public static Rectangle rightWall;
+    public static ArrayList<Rectangle> topWalls = new ArrayList<Rectangle> ();
+    public static ArrayList<Rectangle> leftWalls = new ArrayList<Rectangle> ();
+    public static ArrayList<Rectangle> bottomWalls = new ArrayList<Rectangle> ();
+    public static ArrayList<Rectangle> rightWalls = new ArrayList<Rectangle> ();
 
     public static boolean upEnabled;
     public static boolean leftEnabled;
@@ -113,7 +115,12 @@ public class GameScreen implements Screen {
                 TiledMapTile tile = cell.getTile();
                 switch (tile.getProperties().get("type").toString()) {
                     case "obstruction":
-                        System.out.println("Tile at (" + x + ", " + y + ") is an obstruction.");
+                        //logic needs to be inverted for obstruction walls as opposed to world boundaries.
+                        //hitboxes slightly smaller than wall because otherwise the hitbox clips through multiple at once and you can't escape
+                        bottomWalls.add(new Rectangle((float) x*16+2, (float) y*16+16, (float) 12, (float) 1));;
+                        rightWalls.add(new Rectangle((float) x*16, (float) y*16+2, (float) 1, (float) 12));;
+                        topWalls.add(new Rectangle((float) x*16+2 , (float) y*16, (float) 12, (float) 1));;
+                        leftWalls.add(new Rectangle((float) x*16+16, (float) y*16+2, (float) 1, (float) 12));;
                         break;
                     case "exit":
                         System.out.println("Tile at (" + x + ", " + y + ") is the exit.");
@@ -130,10 +137,10 @@ public class GameScreen implements Screen {
         mapHeight = (int) (logic.getHeight() * logic.getTileHeight() / PPM);
 
         playerHitbox = new Rectangle();
-        topWall = new Rectangle(0, (float) mapHeight, (float) mapWidth, (float) 0.1);
-        leftWall = new Rectangle(0, 0, (float) 0.1, (float) mapHeight);
-        bottomWall = new Rectangle(0, 0, (float) mapWidth, (float) 0.1);
-        rightWall = new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight);
+        topWalls.add(new Rectangle(0, (float) mapHeight, (float) mapWidth, (float) 0.1));
+        leftWalls.add(new Rectangle(0, 0, (float) 0.1, (float) mapHeight));
+        bottomWalls.add(new Rectangle(0, 0, (float) mapWidth, (float) 0.1));
+        rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
     }
 
     @Override
@@ -168,20 +175,28 @@ public class GameScreen implements Screen {
 
         playerHitbox.set(playerState.getX()+6.5f, playerState.getY()+3, 7f, 5f);
 
-        if (playerHitbox.overlaps(topWall)) {
-            upEnabled = false;
+        for (Rectangle topWall : topWalls) {
+            if (playerHitbox.overlaps(topWall)) {
+                upEnabled = false;
+            }
         }
 
-        if (playerHitbox.overlaps(leftWall)) {
-            leftEnabled = false;
+        for (Rectangle leftWall : leftWalls) {
+            if (playerHitbox.overlaps(leftWall)) {
+                leftEnabled = false;
+            }
         }
 
-        if (playerHitbox.overlaps(bottomWall)) {
-            downEnabled = false;
+        for (Rectangle bottomWall : bottomWalls) {
+            if (playerHitbox.overlaps(bottomWall)) {
+                downEnabled = false;
+            }
         }
 
+        for (Rectangle rightWall : rightWalls) {
         if (playerHitbox.overlaps(rightWall)) {
             rightEnabled = false;
+            }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
