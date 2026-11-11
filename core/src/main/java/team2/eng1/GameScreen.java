@@ -48,6 +48,7 @@ public class GameScreen implements Screen {
     public static int mapHeight;
 
     public boolean paused = false;
+    private int random = 0;
 
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
 
@@ -122,6 +123,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        
+//      Generates a random number between 1 and 120. Currently used for randomly playing goose honks.
+        random = (int) (Math.random() * 120) + 1;
 
 //        PerspectiveCamera camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //        camera.position.set(0f, 0f, 10f);
@@ -145,6 +149,12 @@ public class GameScreen implements Screen {
             SoundSystem.geeseHorde(true);
         } else {
             SoundSystem.geeseHorde(false);
+        }
+
+        if (geeseHorde.hordeMembers.size() > 0) {
+            if (random == 120) {
+                SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f);
+            }
         }
 
         if (playerState.getHealth() <= 0) {
