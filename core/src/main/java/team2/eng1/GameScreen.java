@@ -194,8 +194,8 @@ public class GameScreen implements Screen {
         }
 
         for (Rectangle rightWall : rightWalls) {
-        if (playerHitbox.overlaps(rightWall)) {
-            rightEnabled = false;
+            if (playerHitbox.overlaps(rightWall)) {
+                rightEnabled = false;
             }
         }
 

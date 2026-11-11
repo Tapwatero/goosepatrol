@@ -22,7 +22,7 @@ public class GeeseHorde {
 
 
     GeeseHorde() {
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 128; i++) {
             addGeeseToHorde();
         }
     }
@@ -56,9 +56,8 @@ public class GeeseHorde {
         List<GeeseActorState> toRemove = new ArrayList<GeeseActorState>();
 
         this.hordeMembers.forEach(hordeMember -> {
-            Vector2 npcPosition = hordeMember.getPosition();
-            float npcx = npcPosition.x;
-            float npcy = npcPosition.y;
+            float npcx = hordeMember.getX();
+            float npcy = hordeMember.getY();
             hordeMember.gooseHitbox.set(npcx+5, npcy+8, 8.75f, 8.75f);
 
 
