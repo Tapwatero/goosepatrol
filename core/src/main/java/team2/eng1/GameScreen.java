@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Rectangle;
@@ -35,6 +38,7 @@ public class GameScreen implements Screen {
     MovementHandler movementHandler;
     ItemBar itemBar;
     HealthBar healthBar;
+    GameTimer gameTimer;
 
     GeeseAnimator geeseAnimator;
     PlayerAnimator playerAnimator;
@@ -104,6 +108,7 @@ public class GameScreen implements Screen {
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
         itemBar = new ItemBar();
         healthBar = new HealthBar();
+        gameTimer = new GameTimer();
         logic = (TiledMapTileLayer) map.getLayers().get(2);
 
         for (int x = 0; x < logic.getWidth(); x++) {
@@ -238,6 +243,7 @@ public class GameScreen implements Screen {
         playerAnimator.render();
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
+        gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
         healthBar.draw(shapeRenderer);
