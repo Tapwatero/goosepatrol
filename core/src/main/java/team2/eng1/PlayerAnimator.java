@@ -80,7 +80,7 @@ public class PlayerAnimator extends Animator {
         }
 
 
-        spriteBatch.draw(sprite, playerState.getPosition().x, playerState.getPosition().y, 40f, 40f);
+        spriteBatch.draw(sprite, playerState.getPosition().x, playerState.getPosition().y, 20f, 20f);
 	}
 
 
