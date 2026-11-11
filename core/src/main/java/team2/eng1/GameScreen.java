@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -17,6 +19,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class GameScreen implements Screen {
 
@@ -46,6 +50,17 @@ public class GameScreen implements Screen {
 
     public static int mapWidth;
     public static int mapHeight;
+
+    public static Rectangle playerHitbox;
+    public static Rectangle topWall;
+    public static Rectangle leftWall;
+    public static Rectangle bottomWall;
+    public static Rectangle rightWall;
+
+    public static boolean upEnabled;
+    public static boolean leftEnabled;
+    public static boolean downEnabled;
+    public static boolean rightEnabled;
 
     public boolean paused = false;
     private int random = 0;
@@ -113,6 +128,12 @@ public class GameScreen implements Screen {
         gameCam.position.set((gamePort.getWorldWidth() /2) + 50, (gamePort.getWorldHeight() / 2) + 50, 0);
         mapWidth = (int) (logic.getWidth() * logic.getTileWidth() / PPM);
         mapHeight = (int) (logic.getHeight() * logic.getTileHeight() / PPM);
+
+        playerHitbox = new Rectangle();
+        topWall = new Rectangle(0, (float) mapHeight, (float) mapWidth, (float) 0.1);
+        leftWall = new Rectangle(0, 0, (float) 0.1, (float) mapHeight);
+        bottomWall = new Rectangle(0, 0, (float) mapWidth, (float) 0.1);
+        rightWall = new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight);
     }
 
     @Override
@@ -123,6 +144,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        upEnabled = true;
+        leftEnabled = true;
+        downEnabled = true;
+        rightEnabled = true;
         
 //      Generates a random number between 1 and 120. Currently used for randomly playing goose honks.
         random = (int) (Math.random() * 120) + 1;
@@ -139,6 +165,24 @@ public class GameScreen implements Screen {
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        playerHitbox.set(playerState.getX()+6.5f, playerState.getY()+3, 7f, 5f);
+
+        if (playerHitbox.overlaps(topWall)) {
+            upEnabled = false;
+        }
+
+        if (playerHitbox.overlaps(leftWall)) {
+            leftEnabled = false;
+        }
+
+        if (playerHitbox.overlaps(bottomWall)) {
+            downEnabled = false;
+        }
+
+        if (playerHitbox.overlaps(rightWall)) {
+            rightEnabled = false;
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             paused = true;

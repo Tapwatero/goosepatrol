@@ -57,7 +57,7 @@ public class GeeseAnimator extends Animator {
             }
 
 
-            spriteBatch.draw(sprite, geeseActorState.getPosition().x, geeseActorState.getPosition().y, 35f, 35f);
+            spriteBatch.draw(sprite, geeseActorState.getPosition().x, geeseActorState.getPosition().y, 17.5f, 17.5f);
         });
 
 	}
