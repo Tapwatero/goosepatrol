@@ -14,7 +14,7 @@ public class GeeseAnimator extends Animator {
 
     float stateTime;
     SpriteBatch spriteBatch = GameState.getInstance().batch;
-    GeeseHoard geeseHoard = GeeseHoard.getInstance();
+    GeeseHorde geeseHorde = GeeseHorde.getInstance();
 
     public GeeseAnimator(ArrayList<AnimationSheet> animationSheets) {
         super(animationSheets);
@@ -34,7 +34,7 @@ public class GeeseAnimator extends Animator {
         // Get current frame of animation for the current stateTime
 
 
-        geeseHoard.hoardMembers.forEach(geeseActorState -> {
+        geeseHorde.hordeMembers.forEach(geeseActorState -> {
 
             TextureRegion currentFrame;
 
