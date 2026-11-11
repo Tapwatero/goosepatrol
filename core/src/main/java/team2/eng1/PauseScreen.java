@@ -8,10 +8,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PauseScreen implements Screen {
     final GoosePatrol game;
+    private GameScreen gameScreen;
     SpriteBatch spriteBatch = GameState.getInstance().batch;
 
-	public PauseScreen(final GoosePatrol game) {
+	public PauseScreen(final GoosePatrol game, GameScreen gameScreen) {
 		this.game = game;
+        this.gameScreen = gameScreen;
 	}
 
     @Override
@@ -28,11 +30,12 @@ public class PauseScreen implements Screen {
         spriteBatch.end();
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            gameScreen.paused = false;
             game.setScreen(new GameScreen(game));
-			dispose();
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
             game.setScreen(new MainMenuScreen(game));
-            dispose();
+            SoundSystem.currentlyPlaying = 0;
+            gameScreen.dispose();
         }
 	}
 

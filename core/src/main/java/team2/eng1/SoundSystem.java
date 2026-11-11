@@ -48,7 +48,7 @@ public class SoundSystem {
     public static ArrayList<Sound> gooseWing;
     public static ArrayList<Sound> peashooterShoot;
 
-    private static int currentlyPlaying = 0;
+    public static int currentlyPlaying = 0;
 
     public void create() {
 
@@ -123,9 +123,11 @@ public class SoundSystem {
                 switch (random) {
                     case 1:
                         gooseHorde2.play();
+                        currentlyPlaying = 2;
                         break;
                     case 2:
                         gooseHorde3.play();
+                        currentlyPlaying = 3;
                         break;
                 } 
 
@@ -138,9 +140,11 @@ public class SoundSystem {
                 switch (random) {
                     case 1:
                         gooseHorde1.play();
+                        currentlyPlaying = 1;
                         break;
                     case 2:
                         gooseHorde3.play();
+                        currentlyPlaying = 3;
                         break;
                 } 
 
@@ -190,12 +194,15 @@ public class SoundSystem {
                     switch (random) {
                         case 1:
                             gooseHorde1.play();
+                            currentlyPlaying = 1;
                             break;
                         case 2:
                             gooseHorde2.play();
+                            currentlyPlaying = 2;
                             break;
                         case 3:
                             gooseHorde3.play();
+                            currentlyPlaying = 3;
                             break;
                     }
                     break;
@@ -212,13 +219,10 @@ public class SoundSystem {
         } else {
             if (gooseHorde1.isPlaying()) {
                 gooseHorde1.pause();
-                currentlyPlaying = 1;
             } else if (gooseHorde2.isPlaying()) {
                 gooseHorde2.pause();
-                currentlyPlaying = 2;
             } else if (gooseHorde3.isPlaying()) {
                 gooseHorde3.pause();
-                currentlyPlaying = 3;
             }
         }
     }

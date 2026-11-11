@@ -3,6 +3,7 @@ package team2.eng1;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class MovementHandler implements ApplicationListener {
@@ -31,10 +32,10 @@ public class MovementHandler implements ApplicationListener {
 	public void render() {
 
         footstepTime += Gdx.graphics.getDeltaTime();
-        boolean aPressed = Gdx.input.isKeyPressed(Input.Keys.A);
-        boolean wPressed = Gdx.input.isKeyPressed(Input.Keys.W);
-        boolean sPressed = Gdx.input.isKeyPressed(Input.Keys.S);
-        boolean dPressed = Gdx.input.isKeyPressed(Input.Keys.D);
+        boolean aPressed = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        boolean wPressed = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
+        boolean sPressed = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        boolean dPressed = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
 
         boolean anythingPressed = aPressed || wPressed || sPressed || dPressed;
@@ -83,6 +84,7 @@ public class MovementHandler implements ApplicationListener {
         movementVector.x=movementVector.x;
         movementVector.y=movementVector.y;
         playerState.addPosition(movementVector.scl(1));
+        playerState.setPosition(new Vector2 (MathUtils.clamp(playerState.getPosition().x, -16, GameScreen.mapWidth-24), MathUtils.clamp(playerState.getPosition().y, -8, GameScreen.mapHeight-16)));
 	}
 
     @Override
@@ -97,7 +99,6 @@ public class MovementHandler implements ApplicationListener {
 
     @Override
     public void dispose() {
-
     }
 
 
