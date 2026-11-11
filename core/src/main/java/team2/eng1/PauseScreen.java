@@ -24,10 +24,10 @@ public class PauseScreen implements Screen {
         spriteBatch.begin();
 		//draw text. Remember that x and y are in meters
 		game.font.draw(spriteBatch, "Welcome to Pause Menu!!! ", 1, 1.5f);
-		game.font.draw(spriteBatch, "Press P to unpause and M for menu.", 1, 1);
+		game.font.draw(spriteBatch, "Press ESCAPE or P to unpause, and M for menu.", 1, 1);
         spriteBatch.end();
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new GameScreen(game));
 			dispose();
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
