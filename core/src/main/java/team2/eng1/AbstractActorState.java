@@ -49,6 +49,14 @@ public abstract class AbstractActorState {
         return position;
     }
 
+    public float getX() {
+        return position.x;
+    }
+
+    public float getY() {
+        return position.y;
+    }
+
 
     public void setPosition(Vector2 position) {
         this.position = position;
