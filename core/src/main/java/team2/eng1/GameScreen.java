@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
     MovementHandler movementHandler;
     ItemBar itemBar;
     HealthBar healthBar;
-    GameTimer gameTimer;
+    GameTimer gameTimer = GameTimer.getInstance();
 
     GeeseAnimator geeseAnimator;
     PlayerAnimator playerAnimator;
@@ -103,7 +103,6 @@ public class GameScreen implements Screen {
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
         itemBar = new ItemBar();
         healthBar = new HealthBar();
-        gameTimer = new GameTimer();
         logic = (TiledMapTileLayer) map.getLayers().get(2);
 
         for (int x = 0; x < logic.getWidth(); x++) {
@@ -230,6 +229,13 @@ public class GameScreen implements Screen {
             SoundSystem.geeseHorde(false);
             SoundSystem.currentlyPlaying = 0;
             game.setScreen(new MainMenuScreen(game));
+            dispose();
+        }
+
+        if (gameTimer.getTime()<=0){
+            SoundSystem.geeseHorde(false);
+            SoundSystem.currentlyPlaying = 0;
+            game.setScreen(new EndScreen(game,this));
             dispose();
         }
 
