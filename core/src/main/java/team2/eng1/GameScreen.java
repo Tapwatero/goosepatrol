@@ -62,6 +62,7 @@ public class GameScreen implements Screen {
     public static ArrayList<Rectangle> leftWalls = new ArrayList<Rectangle> ();
     public static ArrayList<Rectangle> bottomWalls = new ArrayList<Rectangle> ();
     public static ArrayList<Rectangle> rightWalls = new ArrayList<Rectangle> ();
+    public static Rectangle longBoiEventTrigger;
 
     public static boolean upEnabled;
     public static boolean leftEnabled;
@@ -72,6 +73,8 @@ public class GameScreen implements Screen {
     private int random = 0;
 
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
+
+    EventHandler eventHandler = EventHandler.getInstance();
 
     PlayerActorState playerState = PlayerActorState.getInstance();
 
@@ -127,10 +130,15 @@ public class GameScreen implements Screen {
                         topWalls.add(new Rectangle((float) x*16+2 , (float) y*16, (float) 12, (float) 1));;
                         leftWalls.add(new Rectangle((float) x*16+16, (float) y*16+2, (float) 1, (float) 12));;
                         break;
+                    case "spawn":
+                        //Currently not handled
+                        System.out.println("Tile at (" + x + ", " + y + ") is a goose spawn point");
+                        break;
                     case "exit":
                         System.out.println("Tile at (" + x + ", " + y + ") is the exit.");
                         break;
                     case "event":
+                        //Handled manually
                         System.out.println("Tile at (" + x + ", " + y + ") is an event trigger.");
                         break;
                 }
@@ -146,6 +154,7 @@ public class GameScreen implements Screen {
         leftWalls.add(new Rectangle(0, 0, (float) 0.1, (float) mapHeight));
         bottomWalls.add(new Rectangle(0, 0, (float) mapWidth, (float) 0.1));
         rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
+        longBoiEventTrigger = new Rectangle((float) 16*16, (float) 10*16, 16, 16);
     }
 
     @Override
@@ -204,6 +213,10 @@ public class GameScreen implements Screen {
             }
         }
 
+        if (playerHitbox.overlaps(longBoiEventTrigger)) {
+            eventHandler.longBoi();
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             paused = true;
             game.setScreen(new PauseScreen(game, this));
@@ -217,7 +230,7 @@ public class GameScreen implements Screen {
 
         if (geeseHorde.hordeMembers.size() > 0) {
             if (random == 120) {
-                SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f);
+                SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f, 1);
             }
         }
 
@@ -253,6 +266,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         playerState.dispose();
         geeseHorde.dispose();
+        eventHandler.dispose();
     }
 
     @Override

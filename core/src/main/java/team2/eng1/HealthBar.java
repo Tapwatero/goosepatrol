@@ -28,7 +28,7 @@ public class HealthBar  {
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.rect(0, 0, width, 20);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(0, 0, width*progress, 20);
+        shapeRenderer.rect(0, 0, width*(progress/10), 20);
         shapeRenderer.end();
 
 //        loadingBarBackground.draw(batch, getX(), getY(), getWidth() * getScaleX(), getHeight() * getScaleY());

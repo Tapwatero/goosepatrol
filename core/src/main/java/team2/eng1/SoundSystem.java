@@ -167,14 +167,16 @@ public class SoundSystem {
         });
 	}
 
-    public static void playSound(Sound sound, float volume) {
-        sound.play(volume);
+    public static void playSound(Sound sound, float volume, float pitch) {
+        long id = sound.play(volume);
+        sound.setPitch(id, pitch);
     }
 
-    public static void playSoundRandom(ArrayList<Sound> sounds, float volume) {
+    public static void playSoundRandom(ArrayList<Sound> sounds, float volume, float pitch) {
         int rand = (int) (Math.random() * sounds.size());
         Sound sound = sounds.get(rand);
-        sound.play(volume);
+        long id = sound.play(volume);
+        sound.setPitch(id, pitch);
     }
 
     public static void playMusic(Music music, float volume) {

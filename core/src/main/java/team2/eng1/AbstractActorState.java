@@ -23,7 +23,7 @@ public abstract class AbstractActorState {
     public Direction direction;
     public Vector2 position;
     public AnimationState animationState;
-
+    public float health;
 
 //    private static final ActorState instance  = new ActorState();
 //
@@ -57,11 +57,25 @@ public abstract class AbstractActorState {
         return position.y;
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float newHealth) {
+        this.health = newHealth;
+    }
+
+    public void incrementHealth() {
+        this.health = health+1;
+    }
+
+    public void decrementHealth() {
+        this.health = health-1;
+    }
 
     public void setPosition(Vector2 position) {
         this.position = position;
     }
-
 
     public void addPosition(Vector2 movementVector) {
         this.position.add(movementVector);
