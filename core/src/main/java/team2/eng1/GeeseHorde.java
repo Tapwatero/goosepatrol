@@ -55,41 +55,45 @@ public class GeeseHorde {
         this.hordeMembers.forEach(hordeMember -> {
             float npcx = hordeMember.getX();
             float npcy = hordeMember.getY();
+            float maxX = Float.POSITIVE_INFINITY;
+            float minX = Float.NEGATIVE_INFINITY;
+            float maxY = Float.POSITIVE_INFINITY;
+            float minY = Float.NEGATIVE_INFINITY;
             hordeMember.gooseHitbox.set(npcx+(hordeMember.size*5), npcy+(hordeMember.size*8), hordeMember.size*8.75f, hordeMember.size*8.75f);
-
-            Vector2 movementVector = new Vector2(x-npcx-(hordeMember.size*6),y-npcy-(hordeMember.size*6));
 
             // Collision Logic
             if (hordeMember.gooseHitbox.overlaps(GameScreen.playerHitbox)) {
                 playerState.decrementHealth();
                 SoundSystem.playSoundRandom(SoundSystem.gooseHiss, 1f, (float) 1/hordeMember.size);
                 toRemove.add(hordeMember);
+                SoundSystem.playSoundRandom(SoundSystem.gooseWing, 0.5f, (float) 1/hordeMember.size);
             }
 
             for (Rectangle topWall : GameScreen.topWalls) {
                 if(hordeMember.gooseHitbox.overlaps(topWall)) {
-                    movementVector = new Vector2(x-npcx-(hordeMember.size*6), MathUtils.clamp(y-npcy-(hordeMember.size*6), (float) Double.NEGATIVE_INFINITY, 0f));
+                    maxY = 0;
                 }
             }
 
             for (Rectangle leftWall : GameScreen.leftWalls) {
                 if(hordeMember.gooseHitbox.overlaps(leftWall)) {
-                    movementVector = new Vector2(MathUtils.clamp(x-npcx-(hordeMember.size*6), 0f, (float) Double.POSITIVE_INFINITY), y-npcy-(hordeMember.size*6));
+                    minX = 0;
                 }
             }
 
             for (Rectangle bottomWall : GameScreen.bottomWalls) {
                 if(hordeMember.gooseHitbox.overlaps(bottomWall)) {
-                    movementVector = new Vector2(x-npcx-(hordeMember.size*6), MathUtils.clamp(y-npcy-(hordeMember.size*6), 0f, (float) Double.POSITIVE_INFINITY));
+                    minY = 0;
                 }
             }
 
             for (Rectangle rightWall : GameScreen.rightWalls) {
                 if(hordeMember.gooseHitbox.overlaps(rightWall)) {
-                    movementVector = new Vector2(MathUtils.clamp(x-npcx-(hordeMember.size*6), (float) Double.NEGATIVE_INFINITY, 0f), y-npcy-(hordeMember.size*6));
+                    maxX = 0;
                 }
             }
 
+            Vector2 movementVector = new Vector2(MathUtils.clamp(x-npcx-(hordeMember.size*6), minX, maxX),MathUtils.clamp(y-npcy-(hordeMember.size*6), minY, maxY));
             movementVector.nor();
             movementVector.scl((hordeMember.size*0.2f)*modifier);
 
