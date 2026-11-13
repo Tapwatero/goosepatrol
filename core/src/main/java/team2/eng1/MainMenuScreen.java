@@ -29,6 +29,7 @@ public class MainMenuScreen implements Screen {
         spriteBatch.end();
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            GameTimer.getInstance().resetTime();
 			game.setScreen(new GameScreen(game));
 			dispose();
 		}
