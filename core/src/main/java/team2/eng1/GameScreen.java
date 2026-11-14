@@ -35,13 +35,14 @@ public class GameScreen implements Screen {
     GeeseAnimator geeseAnimator;
     PlayerAnimator playerAnimator;
 //    NPCanimator npcAnimator;
+    BusRenderer busRenderer;
 
     // Tiled Maps Variables
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthoCachedTiledMapRenderer mapRenderer;
-    private OrthographicCamera gameCam;
+    public static OrthographicCamera gameCam;
     private Viewport gamePort;
     ShapeRenderer shapeRenderer;
     ShapeRenderer SlotRenderer;
@@ -56,6 +57,7 @@ public class GameScreen implements Screen {
     public static ArrayList<Rectangle> bottomWalls = new ArrayList<Rectangle> ();
     public static ArrayList<Rectangle> rightWalls = new ArrayList<Rectangle> ();
     public static Rectangle longBoiEventTrigger;
+    public static Rectangle u2BusEventTrigger;
 
     public static boolean upEnabled;
     public static boolean leftEnabled;
@@ -66,6 +68,8 @@ public class GameScreen implements Screen {
     private int random = 0;
 
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
+
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
 
     EventHandler eventHandler = EventHandler.getInstance();
 
@@ -88,11 +92,13 @@ public class GameScreen implements Screen {
 
         playerAnimator = new PlayerAnimator(animationSheetsPlayer);
         geeseAnimator = new GeeseAnimator(animationSheetsGeese);
+        busRenderer = new BusRenderer();
 
         movementHandler = new MovementHandler();
 
         geeseAnimator.create();
         playerAnimator.create();
+        busRenderer.create();
 
         shapeRenderer = new ShapeRenderer();
         SlotRenderer = new ShapeRenderer();
@@ -148,6 +154,7 @@ public class GameScreen implements Screen {
         bottomWalls.add(new Rectangle(0, 0, (float) mapWidth, (float) 0.1));
         rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
         longBoiEventTrigger = new Rectangle((float) 16*16, (float) 10*16, 16, 16);
+        u2BusEventTrigger = new Rectangle((float) 39*16, (float) 26*16, 16, 16);
     }
 
     @Override
@@ -173,6 +180,7 @@ public class GameScreen implements Screen {
 //        camera.update();
 
         geeseHorde.update();
+        u2BusEvent.update();
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
@@ -208,6 +216,10 @@ public class GameScreen implements Screen {
 
         if (playerHitbox.overlaps(longBoiEventTrigger)) {
             eventHandler.longBoi();
+        }
+
+        if (playerHitbox.overlaps(u2BusEventTrigger)) {
+            eventHandler.u2Bus();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -254,6 +266,9 @@ public class GameScreen implements Screen {
         geeseAnimator.render();
 //        game.npcAnimator.render();
         playerAnimator.render();
+        if (u2BusEvent.active == true) {
+            busRenderer.render();  
+        }
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
         itemBar.drawItems(spriteBatch);
@@ -267,8 +282,8 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         playerState.dispose();
-        geeseHorde.dispose();
         eventHandler.dispose();
+        geeseHorde.dispose();
     }
 
     @Override

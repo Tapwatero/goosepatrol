@@ -4,6 +4,7 @@ public class EventHandler {
 
     private static EventHandler instance  = new EventHandler();
     GeeseHorde geeseHorde  = GeeseHorde.getInstance();
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
 
     private boolean longBoiTriggered;
     private boolean u2BusTriggered;
@@ -26,11 +27,13 @@ public class EventHandler {
 
     public void u2Bus() {
         if (u2BusTriggered == false) {
+            u2BusEvent.spawnU2Bus();
             u2BusTriggered = true;
         }
     }
 
     public void dispose() {
+        u2BusEvent.dispose();
         instance = new EventHandler();
     }
 }
