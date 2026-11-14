@@ -59,7 +59,7 @@ public class ItemBar {
         boolean FourPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_4);
         boolean FivePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_5);
 
-        if (spacePressed && currentItem!=0){
+        if (spacePressed && currentItem!=-1){
             hotbar.get(currentItem).use();
         }
         if (ZeroPressed){
