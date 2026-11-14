@@ -43,20 +43,20 @@ public class U2BusEvent {
                 break;
             case DOWN:
                 movementVector = new Vector2(0, -1);
-                if (y+20 < GameScreen.gameCam.position.y) {
+                if (y+40 < GameScreen.gameCam.position.y) {
                     u2BusState.setDirection(Direction.LEFT);
                 }
                 break;
             case LEFT:
                 movementVector = new Vector2(-1, 0);
-                if (x+20 < GameScreen.gameCam.position.x) {
+                if (x+60 < GameScreen.gameCam.position.x) {
                     movementVector = new Vector2(0, 1);
                     u2BusState.setDirection(Direction.UP);
                 }
                 break;
             case RIGHT:
                 movementVector = new Vector2(1, 0);
-                if (x-20 > GameScreen.gameCam.position.x) {
+                if (x-30 > GameScreen.gameCam.position.x) {
                     u2BusState.setDirection(Direction.DOWN);
                 }
                 break;
