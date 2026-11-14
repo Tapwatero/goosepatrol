@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     ShapeRenderer shapeRenderer;
+    ShapeRenderer SlotRenderer;
     private TiledMapTileLayer logic;
 
     public static int mapWidth;
@@ -96,6 +97,7 @@ public class GameScreen implements Screen {
         playerAnimator.create();
 
         shapeRenderer = new ShapeRenderer();
+        SlotRenderer = new ShapeRenderer();
         gameCam = new OrthographicCamera();
 
         gamePort = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, gameCam);
@@ -257,11 +259,16 @@ public class GameScreen implements Screen {
         playerAnimator.render();
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
+<<<<<<< HEAD
         pineappleGrenade.render(gameCam.position.x,gameCam.position.y);
+=======
+        itemBar.drawItems(spriteBatch);
+>>>>>>> main
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
         healthBar.draw(shapeRenderer);
+        itemBar.highlightSlot(SlotRenderer);
     }
 
     @Override
