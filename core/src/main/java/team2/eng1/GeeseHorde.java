@@ -16,9 +16,10 @@ public class GeeseHorde {
 
     private static GeeseHorde instance  = new GeeseHorde();
     private float modifier;
+    static U2BusActorState u2BusActorState;
 
     GeeseHorde() {
-        for (int i = 0; i < 128; i++) {
+        for (int i = 0; i < 256; i++) {
             addGeeseToHorde();
         }
         modifier = 1;
@@ -37,8 +38,8 @@ public class GeeseHorde {
     }
 
     public void spawnLongBoi() {
-        hordeMembers.add(new GeeseActorState(new Vector2(246, 0), true));
-        modifier = 1.5f;
+        hordeMembers.add(new GeeseActorState(new Vector2(150, 80), true));
+        modifier = 2f;
         SoundSystem.playSoundRandom(SoundSystem.gooseHiss, 1f, 0.25f);
     }
 
@@ -66,7 +67,13 @@ public class GeeseHorde {
                 playerState.decrementHealth();
                 SoundSystem.playSoundRandom(SoundSystem.gooseHiss, 1f, (float) 1/hordeMember.size);
                 toRemove.add(hordeMember);
-                SoundSystem.playSoundRandom(SoundSystem.gooseWing, 0.5f, (float) 1/hordeMember.size);
+            }
+
+            if (u2BusActorState != null) {
+                if (hordeMember.gooseHitbox.overlaps(u2BusActorState.busHitbox)) {
+                    SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 1f, (float) 1/hordeMember.size);
+                    toRemove.add(hordeMember);
+                }
             }
 
             for (Rectangle topWall : GameScreen.topWalls) {
@@ -95,7 +102,7 @@ public class GeeseHorde {
 
             Vector2 movementVector = new Vector2(MathUtils.clamp(x-npcx-(hordeMember.size*6), minX, maxX),MathUtils.clamp(y-npcy-(hordeMember.size*6), minY, maxY));
             movementVector.nor();
-            movementVector.scl((hordeMember.size*0.2f)*modifier);
+            movementVector.scl(0.2f*modifier);
 
             hordeMember.setDirection(movementVector.x < 0 ? Direction.LEFT : Direction.RIGHT);
 
@@ -107,6 +114,7 @@ public class GeeseHorde {
                 modifier = 1;
             }
             hordeMembers.remove(geeseActorState);
+            SoundSystem.playSoundRandom(SoundSystem.gooseWing, 0.5f, (float) 1/geeseActorState.size);
         });
     }
 

@@ -12,10 +12,10 @@ public class PlayerActorState extends AbstractActorState {
     private static PlayerActorState instance  = new PlayerActorState();
 
     private PlayerActorState() {
-        setPosition(new Vector2(50  , 50));
+        setPosition(new Vector2((39*16)  , 26*16));
         direction = Direction.RIGHT;
         animationState = AnimationState.IDLE;
-        health = 10;
+        health = 100;
     }
 
     public static PlayerActorState getInstance() {
