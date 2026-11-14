@@ -32,6 +32,8 @@ public class GameScreen implements Screen {
     HealthBar healthBar;
     GameTimer gameTimer = GameTimer.getInstance();
 
+    PineappleGrenade pineappleGrenade;
+
     GeeseAnimator geeseAnimator;
     PlayerAnimator playerAnimator;
 //    NPCanimator npcAnimator;
@@ -103,6 +105,7 @@ public class GameScreen implements Screen {
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
         itemBar = new ItemBar();
         healthBar = new HealthBar();
+        pineappleGrenade = new PineappleGrenade();
         logic = (TiledMapTileLayer) map.getLayers().get(2);
 
         for (int x = 0; x < logic.getWidth(); x++) {
@@ -254,6 +257,7 @@ public class GameScreen implements Screen {
         playerAnimator.render();
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
+        pineappleGrenade.render(gameCam.position.x,gameCam.position.y);
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
