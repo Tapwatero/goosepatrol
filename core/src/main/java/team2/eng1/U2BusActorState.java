@@ -5,11 +5,17 @@ import com.badlogic.gdx.math.Vector2;
 
 public class U2BusActorState extends AbstractActorState {
     public Rectangle busHitbox;
+    private static U2BusActorState instance  = new U2BusActorState();
+    public int geeseClaimed;
 
-    public U2BusActorState(Vector2 startingPosition) {
-        setPosition(startingPosition);
+    public U2BusActorState() {
+        setPosition(new Vector2(0, 0));
         busHitbox = new Rectangle();
         direction = Direction.RIGHT;
+        geeseClaimed = 0;
     }
 
+    public static U2BusActorState getInstance() {
+        return instance;
+    }
 }

@@ -13,11 +13,7 @@ public class BusRenderer implements ApplicationListener {
     Texture u2Bus;
     Sprite u1Sprite;
     Sprite u2Sprite;
-    static Boolean u1BusActive;
-    static Boolean u2BusActive;
-
-    /* static U1BusActorState u1BusActorState; */
-    static U2BusActorState u2BusActorState;
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
 
 	@Override
 	public void create() {
@@ -53,25 +49,18 @@ public class BusRenderer implements ApplicationListener {
             spriteBatch.draw(u1Sprite, u1BusActorState.getX(), u1BusActorState.getY(), 40f, 20);
         } */
 
-        if (u2BusActorState != null) {
+        if (u2BusEvent.active == true) {
             if (u2Sprite.isFlipX()) {
                 u2Sprite.flip(true, false);
             }
-            u2Sprite.setRotation(0);
 
-            if (u2BusActorState.direction == Direction.UP) {
-                u2Sprite.setRotation(90);
-            } else if (u2BusActorState.direction == Direction.LEFT) {
+            if (u2BusEvent.u2BusState.direction == Direction.LEFT) {
                 u2Sprite.flip(true, false);
-            } else if (u2BusActorState.direction == Direction.DOWN) {
-                u2Sprite.setRotation(90);
+            } else if (u2BusEvent.u2BusState.direction == Direction.UP) {
                 u2Sprite.flip(true, false);
             }
 
-            if (u2BusActive) {
-                spriteBatch.draw(u2Sprite, u2BusActorState.getX(), u2BusActorState.getY(), 40f, 20);
-                u2BusActorState.busHitbox = new Rectangle (u2BusActorState.getX(), u2BusActorState.getY(), 40f, 20);
-            }
+            spriteBatch.draw(u2Sprite, u2BusEvent.u2BusState.getX(), u2BusEvent.u2BusState.getY(), 40f, 20);
         }
     }
 

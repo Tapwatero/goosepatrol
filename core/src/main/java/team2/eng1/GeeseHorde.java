@@ -13,10 +13,11 @@ public class GeeseHorde {
 
     Vector2 position;
     PlayerActorState playerState = PlayerActorState.getInstance();
+    private static U2BusEvent u2BusEvent = U2BusEvent.getInstance();
 
     private static GeeseHorde instance  = new GeeseHorde();
     private float modifier;
-    static U2BusActorState u2BusActorState;
+
 
     GeeseHorde() {
         for (int i = 0; i < 256; i++) {
@@ -69,10 +70,11 @@ public class GeeseHorde {
                 toRemove.add(hordeMember);
             }
 
-            if (u2BusActorState != null) {
-                if (hordeMember.gooseHitbox.overlaps(u2BusActorState.busHitbox)) {
+            if (u2BusEvent.active == true) {
+                if (hordeMember.gooseHitbox.overlaps(u2BusEvent.u2BusState.busHitbox)) {
                     SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 1f, (float) 1/hordeMember.size);
                     toRemove.add(hordeMember);
+                    u2BusEvent.u2BusState.geeseClaimed += 1;
                 }
             }
 

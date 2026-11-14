@@ -68,6 +68,8 @@ public class GameScreen implements Screen {
 
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
 
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
+
     EventHandler eventHandler = EventHandler.getInstance();
 
     PlayerActorState playerState = PlayerActorState.getInstance();
@@ -176,6 +178,7 @@ public class GameScreen implements Screen {
 //        camera.update();
 
         geeseHorde.update();
+        u2BusEvent.update();
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
@@ -261,7 +264,9 @@ public class GameScreen implements Screen {
         geeseAnimator.render();
 //        game.npcAnimator.render();
         playerAnimator.render();
-        busRenderer.render();
+        if (u2BusEvent.active == true) {
+            busRenderer.render();  
+        }
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
@@ -274,6 +279,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         playerState.dispose();
         geeseHorde.dispose();
+        u2BusEvent.dispose();
         eventHandler.dispose();
     }
 

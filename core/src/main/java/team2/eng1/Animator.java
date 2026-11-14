@@ -23,7 +23,6 @@ public class Animator implements ApplicationListener {
 
     PlayerActorState playerState = PlayerActorState.getInstance();
 
-
 	// A variable for tracking elapsed time for the animation
 
     private TextureRegion[] sheetToFrames(Texture sheet, AnimationSheet animationSheet) {
