@@ -1,19 +1,23 @@
 package team2.eng1;
 
-import com.badlogic.gdx.Game;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Rectangle;
 
 public class GameScreen implements Screen {
 
@@ -23,14 +27,13 @@ public class GameScreen implements Screen {
     public static final int V_HEIGHT = 185;
     public static final float PPM = 2; // Scale objects
 
-    Animator animator;
     MovementHandler movementHandler;
-    SoundSystem soundSystem;
     ItemBar itemBar;
     HealthBar healthBar;
-    Item item;
-    int currentItem;
+    GameTimer gameTimer = GameTimer.getInstance();
 
+    GeeseAnimator geeseAnimator;
+    PlayerAnimator playerAnimator;
 //    NPCanimator npcAnimator;
 
     // Tiled Maps Variables
@@ -40,39 +43,109 @@ public class GameScreen implements Screen {
     private OrthoCachedTiledMapRenderer mapRenderer;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
+    ShapeRenderer shapeRenderer;
+    private TiledMapTileLayer logic;
 
-    ShapeRenderer HealthRenderer;
-    ShapeRenderer SlotRenderer;
+    public static int mapWidth;
+    public static int mapHeight;
 
-    GeeseHoard geeseHoard = GeeseHoard.getInstance();
+    public static Rectangle playerHitbox;
+    public static ArrayList<Rectangle> topWalls = new ArrayList<Rectangle> ();
+    public static ArrayList<Rectangle> leftWalls = new ArrayList<Rectangle> ();
+    public static ArrayList<Rectangle> bottomWalls = new ArrayList<Rectangle> ();
+    public static ArrayList<Rectangle> rightWalls = new ArrayList<Rectangle> ();
+    public static Rectangle longBoiEventTrigger;
 
+    public static boolean upEnabled;
+    public static boolean leftEnabled;
+    public static boolean downEnabled;
+    public static boolean rightEnabled;
+
+    public boolean paused = false;
+    private int random = 0;
+
+    GeeseHorde geeseHorde = GeeseHorde.getInstance();
+
+    EventHandler eventHandler = EventHandler.getInstance();
 
     PlayerActorState playerState = PlayerActorState.getInstance();
-
 
     public GameScreen(final GoosePatrol game) {
         this.game = game;
 
+        ArrayList<AnimationSheet> animationSheetsGeese = new ArrayList<>();
+        animationSheetsGeese.add(new AnimationSheet(AnimationId.Idle, 0.25f, 2,1, 2));
+        animationSheetsGeese.add(new AnimationSheet(AnimationId.Walk, 0.25f, 4,1, 4));
 
-        // Feel free to delete, this is just for testing the geese horde. It might be useful to have the goose horde sound playing at all times however
-        SoundSystem.geeseHorde(true);
+        ArrayList<AnimationSheet> animationSheetsPlayer = new ArrayList<>();
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.SideIdlePlayer, 0.25f, 4,2, 5));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.SideWalkPlayer, 0.25f, 4,2, 6));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.UpIdlePlayer, 0.25f, 4,2, 5));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.DownIdlePlayer, 0.25f, 4,2, 5));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.UpWalkPlayer, 0.25f, 4,2, 6));
+        animationSheetsPlayer.add(new AnimationSheet(AnimationId.DownWalkPlayer, 0.25f, 4,2, 6));
 
-        HealthRenderer = new ShapeRenderer();
-        SlotRenderer = new ShapeRenderer();
+        playerAnimator = new PlayerAnimator(animationSheetsPlayer);
+        geeseAnimator = new GeeseAnimator(animationSheetsGeese);
+
+        movementHandler = new MovementHandler();
+
+        geeseAnimator.create();
+        playerAnimator.create();
+
+        shapeRenderer = new ShapeRenderer();
         gameCam = new OrthographicCamera();
 
-
         gamePort = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, gameCam);
-
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("maps/campus_east.tmx");
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
         itemBar = new ItemBar();
         healthBar = new HealthBar();
+        logic = (TiledMapTileLayer) map.getLayers().get(2);
 
+        for (int x = 0; x < logic.getWidth(); x++) {
+            for (int y = 0; y < logic.getHeight(); y++) {
+                Cell cell = logic.getCell(x, y);
+                if (cell == null) {
+                    continue;
+                }
+                TiledMapTile tile = cell.getTile();
+                switch (tile.getProperties().get("type").toString()) {
+                    case "obstruction":
+                        //logic needs to be inverted for obstruction walls as opposed to world boundaries.
+                        //hitboxes slightly smaller than wall because otherwise the hitbox clips through multiple at once and you can't escape
+                        bottomWalls.add(new Rectangle((float) x*16+2, (float) y*16+16, (float) 12, (float) 1));;
+                        rightWalls.add(new Rectangle((float) x*16, (float) y*16+2, (float) 1, (float) 12));;
+                        topWalls.add(new Rectangle((float) x*16+2 , (float) y*16, (float) 12, (float) 1));;
+                        leftWalls.add(new Rectangle((float) x*16+16, (float) y*16+2, (float) 1, (float) 12));;
+                        break;
+                    case "spawn":
+                        //Currently not handled
+                        System.out.println("Tile at (" + x + ", " + y + ") is a goose spawn point");
+                        break;
+                    case "exit":
+                        System.out.println("Tile at (" + x + ", " + y + ") is the exit.");
+                        break;
+                    case "event":
+                        //Handled manually
+                        System.out.println("Tile at (" + x + ", " + y + ") is an event trigger.");
+                        break;
+                }
+            }
+        }
 
         gameCam.position.set((gamePort.getWorldWidth() /2) + 50, (gamePort.getWorldHeight() / 2) + 50, 0);
+        mapWidth = (int) (logic.getWidth() * logic.getTileWidth() / PPM);
+        mapHeight = (int) (logic.getHeight() * logic.getTileHeight() / PPM);
+
+        playerHitbox = new Rectangle();
+        topWalls.add(new Rectangle(0, (float) mapHeight, (float) mapWidth, (float) 0.1));
+        leftWalls.add(new Rectangle(0, 0, (float) 0.1, (float) mapHeight));
+        bottomWalls.add(new Rectangle(0, 0, (float) mapWidth, (float) 0.1));
+        rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
+        longBoiEventTrigger = new Rectangle((float) 16*16, (float) 10*16, 16, 16);
     }
 
     @Override
@@ -81,33 +154,90 @@ public class GameScreen implements Screen {
         gamePort.update(width,height,true);
     }
 
-
     @Override
     public void render(float delta) {
+
+        upEnabled = true;
+        leftEnabled = true;
+        downEnabled = true;
+        rightEnabled = true;
+        
+//      Generates a random number between 1 and 120. Currently used for randomly playing goose honks.
+        random = (int) (Math.random() * 120) + 1;
 
 //        PerspectiveCamera camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //        camera.position.set(0f, 0f, 10f);
 //        camera.lookAt(0f, 0f, 0f);
 //        camera.update();
 
-        geeseHoard.update();
+        geeseHorde.update();
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
-
-
-
-
 
         gameCam.update();
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            SoundSystem.geeseHorde(false);
-            game.setScreen(new PauseScreen(game));
-            dispose();
+        playerHitbox.set(playerState.getX()+6.5f, playerState.getY()+3, 7f, 5f);
+
+        for (Rectangle topWall : topWalls) {
+            if (playerHitbox.overlaps(topWall)) {
+                upEnabled = false;
+            }
+        }
+
+        for (Rectangle leftWall : leftWalls) {
+            if (playerHitbox.overlaps(leftWall)) {
+                leftEnabled = false;
+            }
+        }
+
+        for (Rectangle bottomWall : bottomWalls) {
+            if (playerHitbox.overlaps(bottomWall)) {
+                downEnabled = false;
+            }
+        }
+
+        for (Rectangle rightWall : rightWalls) {
+            if (playerHitbox.overlaps(rightWall)) {
+                rightEnabled = false;
+            }
+        }
+
+        if (playerHitbox.overlaps(longBoiEventTrigger)) {
+            eventHandler.longBoi();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            paused = true;
+            game.setScreen(new PauseScreen(game, this));
 		}
 
+        if (geeseHorde.hordeMembers.size() > 5 & paused == false) {
+            SoundSystem.geeseHorde(true);
+        } else {
+            SoundSystem.geeseHorde(false);
+        }
+
+        if (geeseHorde.hordeMembers.size() > 0) {
+            if (random == 120) {
+                SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f, 1);
+            }
+        }
+
+        if (playerState.getHealth() <= 0) {
+            SoundSystem.geeseHorde(false);
+            SoundSystem.currentlyPlaying = 0;
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
+        }
+
+        if (gameTimer.getTime()<=0){
+            SoundSystem.geeseHorde(false);
+            SoundSystem.currentlyPlaying = 0;
+            game.setScreen(new EndScreen(game,this));
+            dispose();
+        }
 
         spriteBatch.setProjectionMatrix(gameCam.combined);
 
@@ -118,22 +248,23 @@ public class GameScreen implements Screen {
 
         spriteBatch.begin();
 
-        game.movementHandler.render();
-        game.geeseAnimator.render();
+        movementHandler.render();
+        geeseAnimator.render();
 //        game.npcAnimator.render();
-        game.playerAnimator.render();
+        playerAnimator.render();
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
-        itemBar.drawItems(spriteBatch);
+        gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
+
         spriteBatch.end();
-
-        healthBar.draw(HealthRenderer);
-        itemBar.highlightSlot(SlotRenderer);
-
+        healthBar.draw(shapeRenderer);
     }
 
     @Override
     public void dispose() {
+        playerState.dispose();
+        geeseHorde.dispose();
+        eventHandler.dispose();
     }
 
     @Override
