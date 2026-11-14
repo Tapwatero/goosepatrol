@@ -278,9 +278,8 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         playerState.dispose();
-        geeseHorde.dispose();
-        u2BusEvent.dispose();
         eventHandler.dispose();
+        geeseHorde.dispose();
     }
 
     @Override

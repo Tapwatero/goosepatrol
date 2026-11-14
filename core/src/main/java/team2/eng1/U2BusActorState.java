@@ -18,4 +18,8 @@ public class U2BusActorState extends AbstractActorState {
     public static U2BusActorState getInstance() {
         return instance;
     }
+
+    public void dispose() {
+        instance  = new U2BusActorState();
+    }
 }

@@ -79,6 +79,8 @@ public class U2BusEvent {
     }
 
     public void dispose() {
+        active = false;
+        u2BusState.dispose();
         instance  = new U2BusEvent();
     }
 }

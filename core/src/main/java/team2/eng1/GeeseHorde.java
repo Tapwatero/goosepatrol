@@ -13,7 +13,7 @@ public class GeeseHorde {
 
     Vector2 position;
     PlayerActorState playerState = PlayerActorState.getInstance();
-    private static U2BusEvent u2BusEvent = U2BusEvent.getInstance();
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
 
     private static GeeseHorde instance  = new GeeseHorde();
     private float modifier;

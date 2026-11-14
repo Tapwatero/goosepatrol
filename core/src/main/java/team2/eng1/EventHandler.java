@@ -33,6 +33,7 @@ public class EventHandler {
     }
 
     public void dispose() {
+        u2BusEvent.dispose();
         instance = new EventHandler();
     }
 }
