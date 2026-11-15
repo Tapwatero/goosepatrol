@@ -265,7 +265,7 @@ public class GameScreen implements Screen {
         if (playerState.getHealth() <= 0) {
             SoundSystem.geeseHorde(false);
             SoundSystem.currentlyPlaying = 0;
-            game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new EndScreen(game,this));
             dispose();
         }
 
