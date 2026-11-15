@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,8 +20,10 @@ public class ItemBar {
     List<Item> hotbar= new ArrayList<>();
     int currentItem=0; //no item equipped
     SpriteBatch spriteBatch = GameState.getInstance().batch;
+    BitmapFont itemFont = new BitmapFont();
 
     public void render(float x, float y){
+        if(hotbar.size()==0) hotbar.add(new Item.PineappleGrenade(3));
         Sprite sprite = new Sprite();
         Texture itemBarTexture = new Texture("GooseItemBar.png");
         TextureRegion itemBarRegion = new TextureRegion(itemBarTexture);
@@ -31,12 +34,11 @@ public class ItemBar {
         // sprite.setPosition(0,0);
 
         spriteBatch.draw(sprite,x-30, y-90, 60f, 60f);
-
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)&&(hotbar.size()<5||hotbar.contains(null))){ //Temp: Add an item to the hotbar
             if(hotbar.contains(null)) {
-                hotbar.set(hotbar.indexOf(null), new Item.PineappleGrenade());
+                hotbar.set(hotbar.indexOf(null), new Item.PineappleGrenade(1));
             }else{
-                hotbar.add(new Item.PineappleGrenade());
+                hotbar.add(new Item.PineappleGrenade(1));
             }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.I)){ //Temp: Remove current item in the hotbar
@@ -49,6 +51,8 @@ public class ItemBar {
             Item item=hotbar.get(slot);
             if(item!=null){
                 spriteBatch.draw(item.getTexture(),x-27+(slot*11),y-42,8,9);
+                itemFont.getData().setScale(0.5f);
+                itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x-23+(slot*11), y-38);
             }
         }
         boolean spacePressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);

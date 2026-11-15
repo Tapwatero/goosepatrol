@@ -15,12 +15,15 @@ public abstract class Item {
 
     public abstract void use();//The item's effect to be triggered by input
 
+    public abstract int getItemCount();//The number of the item in inventory
+
     public static class PineappleGrenade extends Item{
         PineappleHandler pineappleState = PineappleHandler.getInstance();
         PlayerActorState playerState = PlayerActorState.getInstance();
         
-        PineappleGrenade() {
+        PineappleGrenade(int count) {
             super("PineappleGrenade");
+            pineappleState.addCount(count);
         }
 
         @Override
@@ -35,6 +38,10 @@ public abstract class Item {
             pineappleState.setX(playerState.getX());
             pineappleState.setY(playerState.getY());
             pineappleState.setAOE(playerX, playerY, 25);
+        }
+        @Override
+        public int getItemCount(){
+            return pineappleState.getCount();
         }
     }
 }
