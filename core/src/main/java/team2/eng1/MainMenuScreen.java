@@ -24,7 +24,10 @@ public class MainMenuScreen implements Screen {
 
         spriteBatch.begin();
 		//draw text. Remember that x and y are in meters
-		game.font.draw(spriteBatch, "Welcome to Goose Patrol!!! ", 1, 1.5f);
+		game.font.draw(spriteBatch, "Welcome to Goose Patrol!!! ", 1, 2f);
+        game.font.draw(spriteBatch,"Campus is chock full of geese, and soon they will reach critical mass!",1,1.75f);
+        game.font.draw(spriteBatch,"Avoid them and find the exit before time runs out!",1,1.5f);
+        game.font.draw(spriteBatch,"Press WASD to move, the number keys to switch item and Space to use!",1,1.25f);
 		game.font.draw(spriteBatch, "Press the spacebar to begin!", 1, 1);
         spriteBatch.end();
 
