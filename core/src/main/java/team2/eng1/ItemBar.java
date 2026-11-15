@@ -18,7 +18,7 @@ public class ItemBar {
     PlayerActorState playerState = PlayerActorState.getInstance();
     List<Item> hotbar= new ArrayList<>();
     int currentItem=0; //no item equipped
-    Texture Underline=new Texture("GooseItemBar.png");
+    Texture Underline=new Texture("underline.png");
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     BitmapFont itemFont = new BitmapFont();
 
@@ -60,7 +60,7 @@ public class ItemBar {
             }
         }
          for (int inventory = 0; inventory < 5; inventory++) {
-            spriteBatch.draw(Underline, x - 30 + (currentItem * 11), y - 45, 11F, 0.5F);
+            spriteBatch.draw(Underline, x - 27 + (currentItem * 11), y - 47, 8F, 5F);
         }
         
         boolean leftClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
