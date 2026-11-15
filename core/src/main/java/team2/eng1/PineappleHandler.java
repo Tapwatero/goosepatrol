@@ -76,20 +76,15 @@ public class PineappleHandler{
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
+                    detonate = true;
                     pineappleSprite.setTexture(explosionTexture);
                 }
             }, 0.8f);
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    detonate = true;
-                    activeFalse();
-                }
-            }, 1f);
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
                     detonate = false;
+                    activeFalse();
                     pineappleSprite.setTexture(pineappleTexture);
                 }
             }, 1.1f);
