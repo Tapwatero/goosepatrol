@@ -58,6 +58,9 @@ public class PineappleHandler{
     public void setY(float newY){
         y = newY;
     }
+    public void set(int newCount){
+        count = newCount;
+    }
     public void addCount(int moreCount){
         count += moreCount;
     }
@@ -80,7 +83,6 @@ public class PineappleHandler{
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    System.out.println(count);
                     activeFalse();
                 }
             }, 1f);

@@ -32,12 +32,14 @@ public abstract class Item {
         }
         @Override
         public void use() {
-            float playerX = playerState.getX();
-            float playerY = playerState.getY();
-            pineappleState.activeTrue();
-            pineappleState.setX(playerState.getX());
-            pineappleState.setY(playerState.getY());
-            pineappleState.setAOE(playerX, playerY, 25);
+            if(!pineappleState.getActive()){
+                float playerX = playerState.getX();
+                float playerY = playerState.getY();
+                pineappleState.activeTrue();
+                pineappleState.setX(playerState.getX());
+                pineappleState.setY(playerState.getY());
+                pineappleState.setAOE(playerX, playerY, 25);
+            }
         }
         @Override
         public int getItemCount(){
