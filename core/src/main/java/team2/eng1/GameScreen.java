@@ -309,7 +309,6 @@ public class GameScreen implements Screen {
 
         spriteBatch.end();
         healthBar.draw(shapeRenderer);
-        itemBar.highlightSlot(SlotRenderer);
         // Resolves the fact that rendering the health bar as gameCam.combined made it display incorrectly
         peaRenderer.setProjectionMatrix(gameCam.combined);
         peashooter.render(peaRenderer);
