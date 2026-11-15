@@ -18,7 +18,7 @@ public class Peashooter extends Item{
 
 @   Override
     public Texture getTexture() {
-        return new Texture("PineappleGrenade.png");
+        return new Texture("pea.png");
     }
     @Override
     public void use() {
