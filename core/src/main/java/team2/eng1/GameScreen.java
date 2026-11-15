@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
     ShapeRenderer shapeRenderer;
     ShapeRenderer SlotRenderer;
+    ShapeRenderer peaRenderer;
     private TiledMapTileLayer logic;
 
     public static int mapWidth;
@@ -109,6 +110,7 @@ public class GameScreen implements Screen {
         busRenderer.create();
 
         shapeRenderer = new ShapeRenderer();
+        peaRenderer = new ShapeRenderer();
         SlotRenderer = new ShapeRenderer();
         gameCam = new OrthographicCamera();
 
@@ -306,10 +308,11 @@ public class GameScreen implements Screen {
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
-        shapeRenderer.setProjectionMatrix(gameCam.combined);
-        peashooter.render(shapeRenderer);
         healthBar.draw(shapeRenderer);
         itemBar.highlightSlot(SlotRenderer);
+        // Resolves the fact that rendering the health bar as gameCam.combined made it display incorrectly
+        peaRenderer.setProjectionMatrix(gameCam.combined);
+        peashooter.render(peaRenderer);
     }
 
     @Override
