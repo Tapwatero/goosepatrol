@@ -59,6 +59,7 @@ public class GameScreen implements Screen {
     public static ArrayList<Rectangle> rightWalls = new ArrayList<Rectangle> ();
     public static Rectangle longBoiEventTrigger;
     public static Rectangle u2BusEventTrigger;
+    public static Rectangle winTrigger;
 
     public static boolean upEnabled;
     public static boolean leftEnabled;
@@ -139,7 +140,7 @@ public class GameScreen implements Screen {
                         System.out.println("Tile at (" + x + ", " + y + ") is a goose spawn point");
                         break;
                     case "exit":
-                        System.out.println("Tile at (" + x + ", " + y + ") is the exit.");
+                        winTrigger = new Rectangle((float) x*16, (float) y*16, 16, 16);
                         break;
                     case "event":
                         //Handled manually
@@ -226,6 +227,13 @@ public class GameScreen implements Screen {
 
         if (playerHitbox.overlaps(u2BusEventTrigger)) {
             eventHandler.u2Bus();
+        }
+
+        if (playerHitbox.overlaps(winTrigger)) {
+            SoundSystem.geeseHorde(false);
+            SoundSystem.currentlyPlaying = 0;
+            game.setScreen(new EndScreen(game,this));
+            dispose();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {

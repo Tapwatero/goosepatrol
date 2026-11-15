@@ -64,6 +64,7 @@ public class PineappleHandler{
     public void activeTrue(){
         if(!active && count>0) {
             active = true;
+            GameState.getInstance().itemsUsed += 1;
             count--;
         }
     }

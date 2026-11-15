@@ -32,7 +32,7 @@ public abstract class Item {
         }
         @Override
         public void use() {
-            if(pineappleState.active == false) {
+            if (pineappleState.active == false) {
                 float playerX = playerState.getX();
                 float playerY = playerState.getY();
                 pineappleState.activeTrue();
