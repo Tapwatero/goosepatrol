@@ -26,6 +26,7 @@ public class U2BusEvent {
     public void spawnU2Bus() {
         u2BusState.setPosition(new Vector2(GameScreen.gameCam.position.x,GameScreen.gameCam.position.y));
         active = true;
+        SoundSystem.playSound(SoundSystem.busMove, 1f, 1f);
     }
 
     public void movement() {
@@ -39,12 +40,14 @@ public class U2BusEvent {
                 movementVector = new Vector2(0, 1);
                 if (y-20 > GameScreen.gameCam.position.y) {
                     u2BusState.setDirection(Direction.RIGHT);
+                    SoundSystem.playSound(SoundSystem.busSkid, 0.5f, 1f);
                 }
                 break;
             case DOWN:
                 movementVector = new Vector2(0, -1);
                 if (y+40 < GameScreen.gameCam.position.y) {
                     u2BusState.setDirection(Direction.LEFT);
+                    SoundSystem.playSound(SoundSystem.busSkid, 0.5f, 1f);
                 }
                 break;
             case LEFT:
@@ -52,12 +55,14 @@ public class U2BusEvent {
                 if (x+60 < GameScreen.gameCam.position.x) {
                     movementVector = new Vector2(0, 1);
                     u2BusState.setDirection(Direction.UP);
+                    SoundSystem.playSound(SoundSystem.busSkid, 0.5f, 1f);
                 }
                 break;
             case RIGHT:
                 movementVector = new Vector2(1, 0);
                 if (x-30 > GameScreen.gameCam.position.x) {
                     u2BusState.setDirection(Direction.DOWN);
+                    SoundSystem.playSound(SoundSystem.busSkid, 0.5f, 1f);
                 }
                 break;
         }
