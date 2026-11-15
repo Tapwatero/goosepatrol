@@ -32,9 +32,14 @@ public class U2BusEvent {
     public void movement() {
         float x = u2BusState.getX();
         float y = u2BusState.getY();
+        //Default vector
         Vector2 movementVector = new Vector2(0, 0);
+        //Hitbox will always be one frame behind the bus
         u2BusState.busHitbox.set(x, y, 40f, 20f);
 
+        //Ensures the bus circles the screen, but does not leave it until it is exiting. The positions are chosen manually rather than checking with the gameCam.
+        //If it breaches the position chosen, it will change direction. Hence, moving in a square around the screen.
+        //Rotation is not implemented. The bus only faces left or right.
         switch (u2BusState.direction) {
             case UP:
                 movementVector = new Vector2(0, 1);
@@ -73,6 +78,7 @@ public class U2BusEvent {
     }
 
     public void exit() {
+        //simply moves to the right forever
         float x = u2BusState.getX();
         float y = u2BusState.getY();
         Vector2 movementVector = new Vector2(1, 0);
@@ -84,6 +90,7 @@ public class U2BusEvent {
     }
 
     public void dispose() {
+        //ensures that if the bus is active while restarting, it will not stay active in the new instance
         active = false;
         u2BusState.dispose();
         instance  = new U2BusEvent();

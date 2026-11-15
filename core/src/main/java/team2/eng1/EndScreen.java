@@ -6,6 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+/**
+ * This is the screen the game goes to upon reaching an end state.
+ * Displays player score and allows them to exit.
+ */
+
 public class EndScreen implements Screen{
     final GoosePatrol game;
     private GameScreen gameScreen;
@@ -20,6 +25,7 @@ public class EndScreen implements Screen{
 
     @Override
 	public void render(float delta) {
+        //Clears the last screen and renders the end screen text
 		ScreenUtils.clear(0, 0, 0, 0.01f);
 
 		game.viewport.apply();

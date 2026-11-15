@@ -34,6 +34,7 @@ public class PauseScreen implements Screen {
             game.setScreen(new GameScreen(game));
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
             game.setScreen(new MainMenuScreen(game));
+            //This is called, otherwise the geese horde noise will resume instead of restarting as intended
             SoundSystem.currentlyPlaying = 0;
             gameScreen.dispose();
         }

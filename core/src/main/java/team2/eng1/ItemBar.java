@@ -20,9 +20,15 @@ public class ItemBar {
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     BitmapFont itemFont = new BitmapFont();
 
+ feature/peashooter-item
     public void render(float x, float y) {
         if (hotbar.size() == 0) {
             hotbar.add(new Item.Peashooter());
+
+    public void render(float x, float y){
+        if(hotbar.size()==0) {
+            hotbar.add(new Peashooter());
+ main
             hotbar.add(new Item.PineappleGrenade(3));
         }
         Sprite sprite = new Sprite();
@@ -55,8 +61,12 @@ public class ItemBar {
                 itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x - 23 + (slot * 11), y - 38);
             }
         }
+ feature/peashooter-item
 
         boolean spacePressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+
+        boolean leftClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
+ main
         boolean ZeroPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_0);
         boolean OnePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_1);
         boolean TwoPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_2);
@@ -64,6 +74,7 @@ public class ItemBar {
         boolean FourPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_4);
         boolean FivePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_5);
 
+feature/peashooter-item
         boolean peashooterSelected = currentItem >= 0
                 && currentItem < hotbar.size()
                 && hotbar.get(currentItem) instanceof Item.Peashooter;
@@ -74,6 +85,22 @@ public class ItemBar {
         }
         if (ZeroPressed) {
             currentItem = -1; // No item equipped
+
+        if (leftClickPressed && currentItem!=-1 && currentItem < hotbar.size()){
+            hotbar.get(currentItem).use();
+        }
+        if (currentItem !=-1 && currentItem < hotbar.size()) {
+            if (currentItem!=-1 && hotbar.get(currentItem) instanceof Peashooter) {
+                Peashooter.equipped = true;
+            } else {
+                Peashooter.equipped = false;
+            }
+        } else {
+            Peashooter.equipped = false;
+        }
+        if (ZeroPressed){
+            currentItem=-1; //acts as no item equipped
+ main
         }
         if (OnePressed) {
             currentItem = 0;

@@ -36,7 +36,7 @@ public class SoundSystem {
     public static Sound gooseWing2;
     public static Sound peashooterShoot1;
     public static Sound peashooterShoot2;
-    public static Sound peashooterSplat1;
+    public static Sound peashooterSplat;
     public static Sound pineappleArmed;
     public static Sound pineappleExplode;
     public static Music gooseHorde1;
@@ -88,7 +88,7 @@ public class SoundSystem {
         // Peashooter sounds are collected here
         peashooterShoot1 = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_shoot_1.ogg"));
         peashooterShoot2 = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_shoot_2.ogg"));
-        peashooterSplat1 = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_splat_1.ogg"));
+        peashooterSplat = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_splat_1.ogg"));
 
         // Pineapple Grenade sounds are collected here
         pineappleArmed = Gdx.audio.newSound(Gdx.files.internal("sounds/item_pineapple_armed_1.ogg"));
@@ -116,6 +116,7 @@ public class SoundSystem {
         gooseHorde3.setVolume(0.1f);
 
         // To allow the geese horde "music" to randomise, we need to be able to tell when they end
+        // When the geese horde "song" stops, we pick a new one randomly, but we do not allow the same "song" to be picked twice
         gooseHorde1.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {  
@@ -167,11 +168,13 @@ public class SoundSystem {
         });
 	}
 
+    // Sounds passed to this method need to be called statically (ie. SoundSystem.geeseHonk1)
     public static void playSound(Sound sound, float volume, float pitch) {
         long id = sound.play(volume);
         sound.setPitch(id, pitch);
     }
 
+    // Plays a random sound from one of the array lists implemented above. You need to call them statically. (ie. SoundSystem.geeseHonk)
     public static void playSoundRandom(ArrayList<Sound> sounds, float volume, float pitch) {
         int rand = (int) (Math.random() * sounds.size());
         Sound sound = sounds.get(rand);
@@ -179,15 +182,19 @@ public class SoundSystem {
         sound.setPitch(id, pitch);
     }
 
+    // No music is currently implemented. It was planned but deemed unnecessary for Assessment 1.
+    // Feel free to delete this method if you don't plan on adding music.
     public static void playMusic(Music music, float volume) {
         music.play();
         music.setLooping(true);
         music.setVolume(volume);
     }
 
-    // For the geese horde, currently plays at all times but could be changed to only when there are geese on screen.
+    // For the geese horde, currently plays whenever there's over 5 geese but could be changed to only when there are geese on screen.
     // I should probably add fading to the end of each sound to make it smoother, or alternatively just make it wait before playing the next sound.
     // This is not implemented yet, nor is it a need to have feature.
+    // Acts as both a start and a resume. If currentlyPlaying is set (ie. the game has been paused) it will resume the same track rather than pick another.
+    // If it is not set, a random track will play. This makes it pretty easy to just fire and forget this method.
     public static void geeseHorde(boolean active) {
         if (active) {
             switch (currentlyPlaying) {
@@ -229,6 +236,9 @@ public class SoundSystem {
         }
     }
 
+    // Disposing everything in this class is supported, it's just not called anywhere yet.
+    // I'm aware this is bad practice.
+    // I'm sorry.
 	public void dispose() {
 		playerFootstep1.dispose();
         playerFootstep2.dispose();
@@ -258,7 +268,7 @@ public class SoundSystem {
         gooseWing2.dispose();
         peashooterShoot1.dispose();
         peashooterShoot2.dispose();
-        peashooterSplat1.dispose();
+        peashooterSplat.dispose();
         pineappleArmed.dispose();
         pineappleExplode.dispose();
         gooseHorde1.dispose();

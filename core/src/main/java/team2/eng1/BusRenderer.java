@@ -8,17 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BusRenderer implements ApplicationListener {
     SpriteBatch spriteBatch = GameState.getInstance().batch;
-    Texture u1Bus;
     Texture u2Bus;
-    Sprite u1Sprite;
     Sprite u2Sprite;
     U2BusEvent u2BusEvent = U2BusEvent.getInstance();
 
 	@Override
 	public void create() {
-        u1Bus = new Texture(Gdx.files.internal("U1Bus.png"));
         u2Bus = new Texture(Gdx.files.internal("U2Bus.png"));
-        u1Sprite = new Sprite(u1Bus);
         u2Sprite = new Sprite(u2Bus);
     }
 
@@ -30,25 +26,8 @@ public class BusRenderer implements ApplicationListener {
     @Override
     public void render() {
 
-        /* if (u1Sprite.isFlipX()) {
-            u1Sprite.flip(true, false);
-        }
-        u1Sprite.setRotation(0); */
-
-        /* if (u1BusActorState.direction == Direction.UP) {
-            u1Sprite.setRotation(90);
-        } else if (u1BusActorState.direction == Direction.LEFT) {
-            u1Sprite.flip(true, false);
-        } else if (u1BusActorState.direction == Direction.DOWN) {
-            u1Sprite.setRotation(90);
-            u1Sprite.flip(true, false);
-        } */
-
-        /* if (u1BusActive) {
-            spriteBatch.draw(u1Sprite, u1BusActorState.getX(), u1BusActorState.getY(), 40f, 20);
-        } */
-
         if (u2BusEvent.active == true) {
+            // Stops the bus from flickering between left and right states. Poor practice but I forgot flip was a toggle.
             if (u2Sprite.isFlipX()) {
                 u2Sprite.flip(true, false);
             }
