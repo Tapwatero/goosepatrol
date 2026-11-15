@@ -2,28 +2,35 @@ package team2.eng1;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.utils.ScreenUtils;
 
-public class PineappleState{
+public class PineappleHandler{
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     Texture pineappleTexture;
     Sprite pineappleSprite;
+    Circle areaOfEffect;
     boolean active;
     float x;
     float y;
-    private static PineappleState instance;
-    public static PineappleState getInstance() {
+    private static PineappleHandler instance;
+    public static PineappleHandler getInstance() {
         if(instance==null){
-            instance = new PineappleState();
+            instance = new PineappleHandler();
         }
         return instance;
     }
 
-    PineappleState(){
+    PineappleHandler(){
         x = 0;
         y = 0;
+        areaOfEffect = new Circle();
         active = false;
     }
 
@@ -36,12 +43,18 @@ public class PineappleState{
     public float getY(){
         return y;
     }
+    public Circle getAOE(){
+        return areaOfEffect;
+    }
 
     public void setX(float newX){
         x = newX;
     }
     public void setY(float newY){
         y = newY;
+    }
+    public void setAOE(float x, float y, float radius){
+        areaOfEffect = new Circle(x, y, radius);
     }
     public void activeTrue(){
         active = true;

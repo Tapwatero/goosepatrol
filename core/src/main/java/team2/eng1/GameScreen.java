@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
 
     PlayerActorState playerState = PlayerActorState.getInstance();
 
-    PineappleState pineappleState = PineappleState.getInstance();
+    PineappleHandler pineappleState = PineappleHandler.getInstance();
 
     public GameScreen(final GoosePatrol game) {
         this.game = game;
