@@ -160,6 +160,7 @@ public class GameScreen implements Screen {
         rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
         longBoiEventTrigger = new Rectangle((float) 16*16, (float) 10*16, 16, 16);
         u2BusEventTrigger = new Rectangle((float) 39*16, (float) 26*16, 16, 16);
+        geeseHorde.initialise();
     }
 
     @Override

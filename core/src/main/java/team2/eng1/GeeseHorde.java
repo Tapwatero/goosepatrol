@@ -22,23 +22,52 @@ public class GeeseHorde {
     private float modifier;
 
 
-    GeeseHorde() {
+    public static GeeseHorde getInstance() {
+        return instance;
+    }
+
+    public void initialise() {
         for (int i = 0; i < 256; i++) {
             addGeeseToHorde();
         }
         modifier = 1;
     }
 
-    public static GeeseHorde getInstance() {
-        return instance;
-    }
-
     private void addGeeseToHorde() {
 
         int randomNumX = ThreadLocalRandom.current().nextInt(0, 960);
         int randomNumY = ThreadLocalRandom.current().nextInt(0, 640);
+        GeeseActorState goose = new GeeseActorState(new Vector2(randomNumX, randomNumY), false);
 
-        this.hordeMembers.add(new GeeseActorState(new Vector2(randomNumX, randomNumY), false));
+        for (Rectangle topWall : GameScreen.topWalls) {
+            if(goose.gooseHitbox.overlaps(topWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        for (Rectangle leftWall : GameScreen.leftWalls) {
+            if(goose.gooseHitbox.overlaps(leftWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        for (Rectangle bottomWall : GameScreen.bottomWalls) {
+            if(goose.gooseHitbox.overlaps(bottomWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        for (Rectangle rightWall : GameScreen.rightWalls) {
+            if(goose.gooseHitbox.overlaps(rightWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        this.hordeMembers.add(goose);
     }
 
     public void spawnLongBoi() {
