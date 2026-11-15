@@ -56,6 +56,7 @@ public class ItemBar {
             if (item != null) {
                 spriteBatch.draw(item.getTexture(), x - 27 + (slot * 11), y - 42, 8, 9);
                 itemFont.getData().setScale(0.5f);
+                itemFont.setUseIntegerPositions(false);
                 itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x - 23 + (slot * 11), y - 38);
             }
         }

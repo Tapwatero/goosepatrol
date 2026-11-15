@@ -30,6 +30,7 @@ public class GameTimer{
             timeSeconds=-1f;
             worldTimer-=1;
         }
+        timerFont.setUseIntegerPositions(false);
         timerFont.draw(spriteBatch, String.format("%d", worldTimer), x+30, y-30);
     }
     public int getTime(){
