@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
     PlayerAnimator playerAnimator;
 //    NPCanimator npcAnimator;
     BusRenderer busRenderer;
-
+    
     // Tiled Maps Variables
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     private TmxMapLoader mapLoader;
@@ -77,6 +77,8 @@ public class GameScreen implements Screen {
     EventHandler eventHandler = EventHandler.getInstance();
 
     PlayerActorState playerState = PlayerActorState.getInstance();
+
+    PineappleHandler pineappleState = PineappleHandler.getInstance();
 
     public GameScreen(final GoosePatrol game) {
         this.game = game;
@@ -271,6 +273,10 @@ public class GameScreen implements Screen {
         playerAnimator.render();
         if (u2BusEvent.active == true) {
             busRenderer.render();  
+        }
+
+        if (pineappleState.getActive()){
+            pineappleState.render();
         }
 
         itemBar.render(gameCam.position.x,gameCam.position.y);

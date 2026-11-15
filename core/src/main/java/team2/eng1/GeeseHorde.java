@@ -2,7 +2,9 @@ package team2.eng1;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Intersector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,6 +16,7 @@ public class GeeseHorde {
     Vector2 position;
     PlayerActorState playerState = PlayerActorState.getInstance();
     U2BusEvent u2BusEvent = U2BusEvent.getInstance();
+    PineappleHandler pineappleHandler = PineappleHandler.getInstance();
 
     private static GeeseHorde instance  = new GeeseHorde();
     private float modifier;
@@ -75,6 +78,12 @@ public class GeeseHorde {
                     SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 1f, (float) 1/hordeMember.size);
                     toRemove.add(hordeMember);
                     u2BusEvent.u2BusState.geeseClaimed += 1;
+                }
+            }
+
+            if(pineappleHandler.getActive()) {
+                if(Intersector.overlaps(pineappleHandler.getAOE(), hordeMember.gooseHitbox)){
+                    toRemove.add(hordeMember);
                 }
             }
 
