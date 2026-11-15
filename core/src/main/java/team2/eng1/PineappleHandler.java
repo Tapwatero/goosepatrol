@@ -69,6 +69,13 @@ public class PineappleHandler{
             active = true;
             GameState.getInstance().itemsUsed += 1;
             count--;
+            //delays the pineapple sprite disappearing for the specified seconds
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    activeFalse();
+                }
+            }, 1f);
         }
     }
     public void activeFalse(){
@@ -79,17 +86,10 @@ public class PineappleHandler{
     }
 
     public void render(){
-        if (active = true) {
+        if (active == true) {
             pineappleTexture = new Texture(Gdx.files.internal("PineappleGrenade.png"));
             pineappleSprite = new Sprite(pineappleTexture);
             spriteBatch.draw(pineappleSprite, x+8, y, 8, 8);
-            //delays the pineapple sprite disappearing for the specified seconds
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    activeFalse();
-                }
-            }, 1f);
         }
     }
 
