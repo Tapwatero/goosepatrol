@@ -194,11 +194,9 @@ public class GameScreen implements Screen {
         random = (int) (Math.random() * 120) + 1;
 
         geeseHorde.update();
-        feature/map-and-peashooter
         peashooter.update(delta, gamePort, playerState);
 
         u2BusEvent.update();
-        main
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
