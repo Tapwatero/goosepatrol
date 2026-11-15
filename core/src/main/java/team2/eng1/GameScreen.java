@@ -46,7 +46,6 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
     ShapeRenderer shapeRenderer;
     ShapeRenderer SlotRenderer;
-
     private TiledMapTileLayer logic;
 
     public static int mapWidth;
@@ -69,6 +68,7 @@ public class GameScreen implements Screen {
     public boolean paused = false;
     private int random = 0;
 
+    // Singletons
     GameState gameState = GameState.getInstance();
 
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
@@ -118,7 +118,8 @@ public class GameScreen implements Screen {
         itemBar = new ItemBar();
         healthBar = new HealthBar();
         logic = (TiledMapTileLayer) map.getLayers().get(2);
-
+        
+        // Cycles through every cell inside the logic layer of the map and if they have properties, either handles their logic or prints their location
         for (int x = 0; x < logic.getWidth(); x++) {
             for (int y = 0; y < logic.getHeight(); y++) {
                 Cell cell = logic.getCell(x, y);
@@ -128,8 +129,10 @@ public class GameScreen implements Screen {
                 TiledMapTile tile = cell.getTile();
                 switch (tile.getProperties().get("type").toString()) {
                     case "obstruction":
-                        //logic needs to be inverted for obstruction walls as opposed to world boundaries.
-                        //hitboxes slightly smaller than wall because otherwise the hitbox clips through multiple at once and you can't escape
+                        //every single block marked as obstruction has four walls created to block moving inside it. This includes adjacent blocks, which is inefficient.
+                        //logic needs to be inverted for obstruction walls as opposed to world boundaries. (ie. the top wall of the map acts as the bottom wall of a block). 
+                        //It is named in relation to the world boundaries because those were implemented first.
+                        //hitboxes are slightly smaller than wall because otherwise the hitbox clips through multiple at once and movement is disabled.
                         bottomWalls.add(new Rectangle((float) x*16+2, (float) y*16+16, (float) 12, (float) 1));;
                         rightWalls.add(new Rectangle((float) x*16, (float) y*16+2, (float) 1, (float) 12));;
                         topWalls.add(new Rectangle((float) x*16+2 , (float) y*16, (float) 12, (float) 1));;
@@ -143,7 +146,7 @@ public class GameScreen implements Screen {
                         winTrigger = new Rectangle((float) x*16, (float) y*16, 16, 16);
                         break;
                     case "event":
-                        //Handled manually
+                        //Handled manually later as they are both marked the same in the map file.
                         System.out.println("Tile at (" + x + ", " + y + ") is an event trigger.");
                         break;
                 }
@@ -155,12 +158,18 @@ public class GameScreen implements Screen {
         mapHeight = (int) (logic.getHeight() * logic.getTileHeight() / PPM);
 
         playerHitbox = new Rectangle();
+
+        //These are the world boundaries, mentioned earlier
         topWalls.add(new Rectangle(0, (float) mapHeight, (float) mapWidth, (float) 0.1));
         leftWalls.add(new Rectangle(0, 0, (float) 0.1, (float) mapHeight));
         bottomWalls.add(new Rectangle(0, 0, (float) mapWidth, (float) 0.1));
         rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
+
+        //This is where the event tiles are handled manually, as mentioned earlier.
         longBoiEventTrigger = new Rectangle((float) 16*16, (float) 10*16, 16, 16);
         u2BusEventTrigger = new Rectangle((float) 39*16, (float) 26*16, 16, 16);
+        //Fixes an issue where the pineapple grenade would not affect geese on reset.
+        //Previously, the initialise function was actually called when the geeseHorde was initialised.
         geeseHorde.initialise();
     }
 
@@ -173,6 +182,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
+        //Ensures all directions are enabled before collision is checked so only the ones that need to be disabled are.
         upEnabled = true;
         leftEnabled = true;
         downEnabled = true;
@@ -180,11 +190,6 @@ public class GameScreen implements Screen {
         
 //      Generates a random number between 1 and 120. Currently used for randomly playing goose honks.
         random = (int) (Math.random() * 120) + 1;
-
-//        PerspectiveCamera camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        camera.position.set(0f, 0f, 10f);
-//        camera.lookAt(0f, 0f, 0f);
-//        camera.update();
 
         geeseHorde.update();
         u2BusEvent.update();
@@ -197,6 +202,8 @@ public class GameScreen implements Screen {
 
         playerHitbox.set(playerState.getX()+6.5f, playerState.getY()+3, 7f, 5f);
 
+        //Four for loops per frame for detecting collision as we didn't have time to learn a physics engine. Inefficient but works for our purposes.
+        //Disables directions if you walk
         for (Rectangle topWall : topWalls) {
             if (playerHitbox.overlaps(topWall)) {
                 upEnabled = false;
@@ -229,6 +236,7 @@ public class GameScreen implements Screen {
             eventHandler.u2Bus();
         }
 
+        //SoundSystem.geeseHorde needs to be turned off (and currentlyPlaying set to 0) on any transition to a new game screen to prevent it playing on the new screen
         if (playerHitbox.overlaps(winTrigger)) {
             SoundSystem.geeseHorde(false);
             SoundSystem.currentlyPlaying = 0;
@@ -247,6 +255,7 @@ public class GameScreen implements Screen {
             SoundSystem.geeseHorde(false);
         }
 
+        //1 in 120 chance per frame for a geese honk sound to play. This means the higher your framerate, the worse experience auditorially you will have.
         if (geeseHorde.hordeMembers.size() > 0) {
             if (random == 120) {
                 SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f, 1);
@@ -299,6 +308,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        // These need to be disposed of in this specific order or things break.
+        // This is because some of these instances while ininitialising try to create instances of ones later down the list.
+        // This also doesn't ACTUALLY dispose of anything like it should in best practice.
+        // I am fairly certain this causes a memory leak, but this game is not large enough for this to be a worry at this stage
         gameState.dispose();
         playerState.dispose();
         u2BusEvent.dispose();

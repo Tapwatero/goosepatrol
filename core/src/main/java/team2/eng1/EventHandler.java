@@ -18,6 +18,8 @@ public class EventHandler {
         return instance;
     }
 
+    // The Event Handler only manages the events starting, it doesn't contain the code.
+    // The code says longBoi but it simply is a goose with 2x size on both axes. A pale imitation.
     public void longBoi() {
         if (longBoiTriggered == false) {
             geeseHorde.spawnLongBoi();

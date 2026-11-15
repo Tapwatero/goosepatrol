@@ -13,9 +13,10 @@ public class GeeseActorState extends AbstractActorState {
 
     public GeeseActorState(Vector2 startingPosition, boolean boss) {
         setPosition(startingPosition);
-        gooseHitbox = new Rectangle(startingPosition.x+5, startingPosition.y+8, 17.5f, 17.5f);
+        gooseHitbox = new Rectangle(startingPosition.x+5, startingPosition.y+8, 8.75f, 8.75f);
         direction = Direction.RIGHT;
         animationState = AnimationState.WALKING;
+        //Size is passed to the animator to control its sprite and hitbox size.
         if (boss) {
             size = 2;
             health = 6;
