@@ -1,18 +1,15 @@
 package team2.eng1;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 
 public class PineappleHandler{
     SpriteBatch spriteBatch = GameState.getInstance().batch;
+    GameTimer gameTimer = GameTimer.getInstance();
     Texture pineappleTexture;
     Sprite pineappleSprite;
     Circle areaOfEffect;
@@ -68,6 +65,12 @@ public class PineappleHandler{
             pineappleTexture = new Texture(Gdx.files.internal("PineappleGrenade.png"));
             pineappleSprite = new Sprite(pineappleTexture);
             spriteBatch.draw(pineappleSprite, x+8, y, 8, 8);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    activeFalse();
+                }
+            }, 1f);
         }
     }
 }
