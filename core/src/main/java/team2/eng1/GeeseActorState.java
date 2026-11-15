@@ -13,7 +13,7 @@ public class GeeseActorState extends AbstractActorState {
 
     public GeeseActorState(Vector2 startingPosition, boolean boss) {
         setPosition(startingPosition);
-        gooseHitbox = new Rectangle();
+        gooseHitbox = new Rectangle(startingPosition.x+5, startingPosition.y+8, 17.5f, 17.5f);
         direction = Direction.RIGHT;
         animationState = AnimationState.WALKING;
         if (boss) {
