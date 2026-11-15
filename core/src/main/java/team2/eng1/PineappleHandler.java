@@ -19,8 +19,9 @@ public class PineappleHandler{
     float y;
     int count;
 
+    //allows variables like "active" and "count" to be universal and
+    //accessed across all classes
     private static PineappleHandler instance = new PineappleHandler();
-
     public static PineappleHandler getInstance() {
         return instance;
     }
@@ -62,6 +63,8 @@ public class PineappleHandler{
         areaOfEffect = new Circle(x, y, radius);
     }
     public void activeTrue(){
+        //only allows the pineapple grenade to activate if there is
+        //more than one in inventory, and it is not already activated
         if(!active && count>0) {
             active = true;
             GameState.getInstance().itemsUsed += 1;
@@ -80,6 +83,7 @@ public class PineappleHandler{
             pineappleTexture = new Texture(Gdx.files.internal("PineappleGrenade.png"));
             pineappleSprite = new Sprite(pineappleTexture);
             spriteBatch.draw(pineappleSprite, x+8, y, 8, 8);
+            //delays the pineapple sprite disappearing for the specified seconds
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {

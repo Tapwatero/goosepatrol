@@ -41,9 +41,9 @@ public abstract class Item {
                 if (pineappleState.active == true) {
                     SoundSystem.playSound(SoundSystem.pineappleArmed, 1f, 1f);
                 }
-                pineappleState.setX(playerState.getX());
-                pineappleState.setY(playerState.getY());
-                pineappleState.setAOE(playerX, playerY, 25);
+                pineappleState.setX(playerX);
+                pineappleState.setY(playerY);
+                pineappleState.setAOE(playerX, playerY, 25); //the area of effect for the "explosion"
             }
         }
         @Override
