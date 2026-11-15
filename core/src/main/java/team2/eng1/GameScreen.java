@@ -36,6 +36,7 @@ public class GameScreen implements Screen {
     public static final float PPM = 2; // Scale objects
 
     MovementHandler movementHandler;
+    Peashooter peashooter;
     ItemBar itemBar;
     HealthBar healthBar;
     GameTimer gameTimer;
@@ -94,6 +95,7 @@ public class GameScreen implements Screen {
         geeseAnimator = new GeeseAnimator(animationSheetsGeese);
 
         movementHandler = new MovementHandler();
+        peashooter = new Peashooter();
 
         geeseAnimator.create();
         playerAnimator.create();
@@ -171,6 +173,7 @@ public class GameScreen implements Screen {
 //        camera.update();
 
         geeseHorde.update();
+        peashooter.update(delta, gamePort, playerState);
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
@@ -246,6 +249,8 @@ public class GameScreen implements Screen {
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
+        shapeRenderer.setProjectionMatrix(gameCam.combined);
+        peashooter.render(shapeRenderer);
         healthBar.draw(shapeRenderer);
     }
 
