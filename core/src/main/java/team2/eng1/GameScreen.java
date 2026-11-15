@@ -28,6 +28,7 @@ public class GameScreen implements Screen {
     public static final float PPM = 2; // Scale objects
 
     MovementHandler movementHandler;
+    Peashooter peashooter;
     ItemBar itemBar;
     HealthBar healthBar;
     GameTimer gameTimer = GameTimer.getInstance();
@@ -101,6 +102,7 @@ public class GameScreen implements Screen {
         busRenderer = new BusRenderer();
 
         movementHandler = new MovementHandler();
+        peashooter = new Peashooter();
 
         geeseAnimator.create();
         playerAnimator.create();
@@ -192,7 +194,11 @@ public class GameScreen implements Screen {
         random = (int) (Math.random() * 120) + 1;
 
         geeseHorde.update();
+        feature/map-and-peashooter
+        peashooter.update(delta, gamePort, playerState);
+
         u2BusEvent.update();
+        main
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
@@ -302,6 +308,8 @@ public class GameScreen implements Screen {
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
+        shapeRenderer.setProjectionMatrix(gameCam.combined);
+        peashooter.render(shapeRenderer);
         healthBar.draw(shapeRenderer);
         itemBar.highlightSlot(SlotRenderer);
     }
