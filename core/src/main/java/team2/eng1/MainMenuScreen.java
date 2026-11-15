@@ -1,6 +1,5 @@
 package team2.eng1;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -30,6 +29,7 @@ public class MainMenuScreen implements Screen {
         spriteBatch.end();
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            GameTimer.getInstance().resetTime();
 			game.setScreen(new GameScreen(game));
 			dispose();
 		}

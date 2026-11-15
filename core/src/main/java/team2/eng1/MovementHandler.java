@@ -3,7 +3,6 @@ package team2.eng1;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class MovementHandler implements ApplicationListener {
@@ -43,7 +42,7 @@ public class MovementHandler implements ApplicationListener {
         if (anythingPressed) {
             playerState.setAnimationState(AnimationState.WALKING);
             if (footstepTime > 0.5f) {
-                SoundSystem.playSoundRandom(SoundSystem.playerFootstep, 1f);
+                SoundSystem.playSoundRandom(SoundSystem.playerFootstep, 1f, 1f);
                 footstepTime = 0;
             }
         } else {
@@ -98,7 +97,6 @@ public class MovementHandler implements ApplicationListener {
 
     @Override
     public void dispose() {
+        
     }
-
-
 }

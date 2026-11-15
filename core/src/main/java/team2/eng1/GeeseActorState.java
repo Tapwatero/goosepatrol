@@ -9,14 +9,20 @@ import com.badlogic.gdx.math.Rectangle;
 public class GeeseActorState extends AbstractActorState {
 
     public Rectangle gooseHitbox;
+    public int size;
 
-    public GeeseActorState(Vector2 startingPosition) {
+    public GeeseActorState(Vector2 startingPosition, boolean boss) {
         setPosition(startingPosition);
-        gooseHitbox = new Rectangle();
+        gooseHitbox = new Rectangle(startingPosition.x+5, startingPosition.y+8, 17.5f, 17.5f);
         direction = Direction.RIGHT;
         animationState = AnimationState.WALKING;
+        if (boss) {
+            size = 2;
+            health = 6;
+        }
+        else {
+            size = 1;
+            health = 2;
+        }
     }
-
-
-
 }

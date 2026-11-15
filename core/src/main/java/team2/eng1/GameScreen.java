@@ -5,27 +5,19 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameScreen implements Screen {
 
@@ -39,20 +31,23 @@ public class GameScreen implements Screen {
     Peashooter peashooter;
     ItemBar itemBar;
     HealthBar healthBar;
-    GameTimer gameTimer;
+    GameTimer gameTimer = GameTimer.getInstance();
 
     GeeseAnimator geeseAnimator;
     PlayerAnimator playerAnimator;
 //    NPCanimator npcAnimator;
-
+    BusRenderer busRenderer;
+    
     // Tiled Maps Variables
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthoCachedTiledMapRenderer mapRenderer;
-    private OrthographicCamera gameCam;
+    public static OrthographicCamera gameCam;
     private Viewport gamePort;
     ShapeRenderer shapeRenderer;
+    ShapeRenderer SlotRenderer;
+
     private TiledMapTileLayer logic;
 
     public static int mapWidth;
@@ -63,6 +58,9 @@ public class GameScreen implements Screen {
     public static ArrayList<Rectangle> leftWalls = new ArrayList<Rectangle> ();
     public static ArrayList<Rectangle> bottomWalls = new ArrayList<Rectangle> ();
     public static ArrayList<Rectangle> rightWalls = new ArrayList<Rectangle> ();
+    public static Rectangle longBoiEventTrigger;
+    public static Rectangle u2BusEventTrigger;
+    public static Rectangle winTrigger;
 
     public static boolean upEnabled;
     public static boolean leftEnabled;
@@ -72,9 +70,17 @@ public class GameScreen implements Screen {
     public boolean paused = false;
     private int random = 0;
 
+    GameState gameState = GameState.getInstance();
+
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
 
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
+
+    EventHandler eventHandler = EventHandler.getInstance();
+
     PlayerActorState playerState = PlayerActorState.getInstance();
+
+    PineappleHandler pineappleState = PineappleHandler.getInstance();
 
     public GameScreen(final GoosePatrol game) {
         this.game = game;
@@ -93,14 +99,17 @@ public class GameScreen implements Screen {
 
         playerAnimator = new PlayerAnimator(animationSheetsPlayer);
         geeseAnimator = new GeeseAnimator(animationSheetsGeese);
+        busRenderer = new BusRenderer();
 
         movementHandler = new MovementHandler();
         peashooter = new Peashooter();
 
         geeseAnimator.create();
         playerAnimator.create();
+        busRenderer.create();
 
         shapeRenderer = new ShapeRenderer();
+        SlotRenderer = new ShapeRenderer();
         gameCam = new OrthographicCamera();
 
         gamePort = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, gameCam);
@@ -110,7 +119,6 @@ public class GameScreen implements Screen {
         mapRenderer = new OrthoCachedTiledMapRenderer(map, 1/PPM);
         itemBar = new ItemBar();
         healthBar = new HealthBar();
-        gameTimer = new GameTimer();
         logic = (TiledMapTileLayer) map.getLayers().get(2);
 
         for (int x = 0; x < logic.getWidth(); x++) {
@@ -129,10 +137,15 @@ public class GameScreen implements Screen {
                         topWalls.add(new Rectangle((float) x*16+2 , (float) y*16, (float) 12, (float) 1));;
                         leftWalls.add(new Rectangle((float) x*16+16, (float) y*16+2, (float) 1, (float) 12));;
                         break;
+                    case "spawn":
+                        //Currently not handled
+                        System.out.println("Tile at (" + x + ", " + y + ") is a goose spawn point");
+                        break;
                     case "exit":
-                        System.out.println("Tile at (" + x + ", " + y + ") is the exit.");
+                        winTrigger = new Rectangle((float) x*16, (float) y*16, 16, 16);
                         break;
                     case "event":
+                        //Handled manually
                         System.out.println("Tile at (" + x + ", " + y + ") is an event trigger.");
                         break;
                 }
@@ -148,6 +161,9 @@ public class GameScreen implements Screen {
         leftWalls.add(new Rectangle(0, 0, (float) 0.1, (float) mapHeight));
         bottomWalls.add(new Rectangle(0, 0, (float) mapWidth, (float) 0.1));
         rightWalls.add(new Rectangle((float) mapWidth, 0, (float) 0.1, (float) mapHeight));
+        longBoiEventTrigger = new Rectangle((float) 16*16, (float) 10*16, 16, 16);
+        u2BusEventTrigger = new Rectangle((float) 39*16, (float) 26*16, 16, 16);
+        geeseHorde.initialise();
     }
 
     @Override
@@ -173,7 +189,11 @@ public class GameScreen implements Screen {
 //        camera.update();
 
         geeseHorde.update();
+        feature/map-and-peashooter
         peashooter.update(delta, gamePort, playerState);
+
+        u2BusEvent.update();
+        main
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
@@ -207,6 +227,21 @@ public class GameScreen implements Screen {
             }
         }
 
+        if (playerHitbox.overlaps(longBoiEventTrigger)) {
+            eventHandler.longBoi();
+        }
+
+        if (playerHitbox.overlaps(u2BusEventTrigger)) {
+            eventHandler.u2Bus();
+        }
+
+        if (playerHitbox.overlaps(winTrigger)) {
+            SoundSystem.geeseHorde(false);
+            SoundSystem.currentlyPlaying = 0;
+            game.setScreen(new EndScreen(game,this));
+            dispose();
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)||Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             paused = true;
             game.setScreen(new PauseScreen(game, this));
@@ -220,7 +255,7 @@ public class GameScreen implements Screen {
 
         if (geeseHorde.hordeMembers.size() > 0) {
             if (random == 120) {
-                SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f);
+                SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 0.25f, 1);
             }
         }
 
@@ -228,6 +263,13 @@ public class GameScreen implements Screen {
             SoundSystem.geeseHorde(false);
             SoundSystem.currentlyPlaying = 0;
             game.setScreen(new MainMenuScreen(game));
+            dispose();
+        }
+
+        if (gameTimer.getTime()<=0){
+            SoundSystem.geeseHorde(false);
+            SoundSystem.currentlyPlaying = 0;
+            game.setScreen(new EndScreen(game,this));
             dispose();
         }
 
@@ -244,20 +286,33 @@ public class GameScreen implements Screen {
         geeseAnimator.render();
 //        game.npcAnimator.render();
         playerAnimator.render();
+        if (u2BusEvent.active == true) {
+            busRenderer.render();  
+        }
+
+        if (pineappleState.active == true){
+            pineappleState.render();
+        }
 
         itemBar.render(gameCam.position.x,gameCam.position.y);
+        itemBar.drawItems(spriteBatch);
         gameTimer.render(gameCam.position.x,gameCam.position.y,spriteBatch,delta);
 
         spriteBatch.end();
         shapeRenderer.setProjectionMatrix(gameCam.combined);
         peashooter.render(shapeRenderer);
         healthBar.draw(shapeRenderer);
+        itemBar.highlightSlot(SlotRenderer);
     }
 
     @Override
     public void dispose() {
+        gameState.dispose();
         playerState.dispose();
+        u2BusEvent.dispose();
+        pineappleState.dispose();
         geeseHorde.dispose();
+        eventHandler.dispose();
     }
 
     @Override

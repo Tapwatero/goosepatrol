@@ -1,11 +1,10 @@
 package team2.eng1;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-
+import com.badlogic.gdx.math.Intersector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,40 +15,72 @@ public class GeeseHorde {
 
     Vector2 position;
     PlayerActorState playerState = PlayerActorState.getInstance();
-
+    U2BusEvent u2BusEvent = U2BusEvent.getInstance();
+    PineappleHandler pineappleHandler = PineappleHandler.getInstance();
 
     private static GeeseHorde instance  = new GeeseHorde();
-
-
-    GeeseHorde() {
-        for (int i = 0; i < 128; i++) {
-            addGeeseToHorde();
-        }
-    }
+    private float modifier;
 
 
     public static GeeseHorde getInstance() {
         return instance;
     }
 
+    public void initialise() {
+        for (int i = 0; i < 256; i++) {
+            addGeeseToHorde();
+        }
+        modifier = 1;
+    }
+
     private void addGeeseToHorde() {
 
         int randomNumX = ThreadLocalRandom.current().nextInt(0, 960);
         int randomNumY = ThreadLocalRandom.current().nextInt(0, 640);
+        GeeseActorState goose = new GeeseActorState(new Vector2(randomNumX, randomNumY), false);
 
-        this.hordeMembers.add(new GeeseActorState(new Vector2(randomNumX, randomNumY)));
+        for (Rectangle topWall : GameScreen.topWalls) {
+            if(goose.gooseHitbox.overlaps(topWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        for (Rectangle leftWall : GameScreen.leftWalls) {
+            if(goose.gooseHitbox.overlaps(leftWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        for (Rectangle bottomWall : GameScreen.bottomWalls) {
+            if(goose.gooseHitbox.overlaps(bottomWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        for (Rectangle rightWall : GameScreen.rightWalls) {
+            if(goose.gooseHitbox.overlaps(rightWall)) {
+                addGeeseToHorde();
+                return;
+            }
+        }
+
+        this.hordeMembers.add(goose);
     }
 
-
-
+    public void spawnLongBoi() {
+        hordeMembers.add(new GeeseActorState(new Vector2(150, 80), true));
+        modifier = 2f;
+        SoundSystem.playSoundRandom(SoundSystem.gooseHiss, 1f, 0.25f);
+    }
 
 	public void update() {
         moveToPlayer();
 	}
 
-
     public void moveToPlayer() {
-
         float x = GameScreen.playerHitbox.getX();
         float y = GameScreen.playerHitbox.getY();
 
@@ -58,60 +89,77 @@ public class GeeseHorde {
         this.hordeMembers.forEach(hordeMember -> {
             float npcx = hordeMember.getX();
             float npcy = hordeMember.getY();
-            hordeMember.gooseHitbox.set(npcx+5, npcy+8, 8.75f, 8.75f);
-
-
-            Vector2 movementVector = new Vector2(x-npcx-5,y-npcy-5);
-
+            float maxX = Float.POSITIVE_INFINITY;
+            float minX = Float.NEGATIVE_INFINITY;
+            float maxY = Float.POSITIVE_INFINITY;
+            float minY = Float.NEGATIVE_INFINITY;
+            hordeMember.gooseHitbox.set(npcx+(hordeMember.size*5), npcy+(hordeMember.size*8), hordeMember.size*8.75f, hordeMember.size*8.75f);
 
             // Collision Logic
             if (hordeMember.gooseHitbox.overlaps(GameScreen.playerHitbox)) {
-                playerState.setHealth((float) (playerState.getHealth()-0.1));
-                SoundSystem.playSoundRandom(SoundSystem.gooseHiss, 1f);
+                playerState.decrementHealth();
+                SoundSystem.playSoundRandom(SoundSystem.gooseHiss, 1f, (float) 1/hordeMember.size);
                 toRemove.add(hordeMember);
+            }
+
+            if (u2BusEvent.active == true) {
+                if (hordeMember.gooseHitbox.overlaps(u2BusEvent.u2BusState.busHitbox)) {
+                    SoundSystem.playSoundRandom(SoundSystem.gooseHonk, 1f, (float) 1/hordeMember.size);
+                    toRemove.add(hordeMember);
+                    u2BusEvent.u2BusState.geeseClaimed += 1;
+                }
+            }
+
+            if(pineappleHandler.active == true) {
+                if(Intersector.overlaps(pineappleHandler.getAOE(), hordeMember.gooseHitbox)){
+                    toRemove.add(hordeMember);
+                    SoundSystem.playSound(SoundSystem.gooseEat, 1f, (float) 1/hordeMember.size);
+                }
             }
 
             for (Rectangle topWall : GameScreen.topWalls) {
                 if(hordeMember.gooseHitbox.overlaps(topWall)) {
-                    movementVector = new Vector2(x-npcx-5, MathUtils.clamp(y-npcy-5, (float) Double.NEGATIVE_INFINITY, 0f));
+                    maxY = 0;
                 }
             }
 
             for (Rectangle leftWall : GameScreen.leftWalls) {
                 if(hordeMember.gooseHitbox.overlaps(leftWall)) {
-                    movementVector = new Vector2(MathUtils.clamp(x-npcx-5, 0f, (float) Double.POSITIVE_INFINITY), y-npcy-5);
+                    minX = 0;
                 }
             }
 
             for (Rectangle bottomWall : GameScreen.bottomWalls) {
                 if(hordeMember.gooseHitbox.overlaps(bottomWall)) {
-                    movementVector = new Vector2(x-npcx-5, MathUtils.clamp(y-npcy-5, 0f, (float) Double.POSITIVE_INFINITY));
+                    minY = 0;
                 }
             }
 
             for (Rectangle rightWall : GameScreen.rightWalls) {
                 if(hordeMember.gooseHitbox.overlaps(rightWall)) {
-                    movementVector = new Vector2(MathUtils.clamp(x-npcx-5, (float) Double.NEGATIVE_INFINITY, 0f), y-npcy-5);
+                    maxX = 0;
                 }
             }
 
+            Vector2 movementVector = new Vector2(MathUtils.clamp(x-npcx-(hordeMember.size*6), minX, maxX),MathUtils.clamp(y-npcy-(hordeMember.size*6), minY, maxY));
             movementVector.nor();
-            movementVector.scl(0.2f);
+            movementVector.scl(0.2f*modifier);
 
             hordeMember.setDirection(movementVector.x < 0 ? Direction.LEFT : Direction.RIGHT);
-
 
             hordeMember.addPosition(movementVector);
         });
 
         toRemove.forEach(geeseActorState -> {
+            if (geeseActorState.size == 2) {
+                modifier = 1;
+            }
             hordeMembers.remove(geeseActorState);
+            SoundSystem.playSoundRandom(SoundSystem.gooseWing, 0.5f, (float) 1/geeseActorState.size);
         });
     }
 
     public void dispose() {
-        hordeMembers.clear();
         instance  = new GeeseHorde();
     }
-
 }
