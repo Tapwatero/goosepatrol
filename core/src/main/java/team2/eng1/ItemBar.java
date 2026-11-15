@@ -18,6 +18,7 @@ public class ItemBar {
     PlayerActorState playerState = PlayerActorState.getInstance();
     List<Item> hotbar= new ArrayList<>();
     int currentItem=0; //no item equipped
+    Texture Underline=new Texture("underline.png");
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     BitmapFont itemFont = new BitmapFont();
 
@@ -29,34 +30,40 @@ public class ItemBar {
         Sprite sprite = new Sprite();
         Texture itemBarTexture = new Texture("GooseItemBar.png");
         TextureRegion itemBarRegion = new TextureRegion(itemBarTexture);
-        itemBarRegion.setRegion(1,16 ,64 , 48);
+        itemBarRegion.setRegion(1, 16, 64, 48);
         sprite.setRegion(itemBarRegion);
         sprite.setScale(20f);
 
         // sprite.setPosition(0,0);
 
-        spriteBatch.draw(sprite,x-30, y-90, 60f, 60f);
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)&&(hotbar.size()<5||hotbar.contains(null))){ //Temp: Add an item to the hotbar
-            if(hotbar.contains(null)) {
+        spriteBatch.draw(sprite, x - 30, y - 90, 60f, 60f);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (hotbar.size() < 5 || hotbar.contains(null))) { //Temp: Add an item to the hotbar
+            if (hotbar.contains(null)) {
                 hotbar.set(hotbar.indexOf(null), new Item.PineappleGrenade(1));
-            }else{
+            } else {
                 hotbar.add(new Item.PineappleGrenade(1));
             }
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I)){ //Temp: Remove current item in the hotbar
-            if(currentItem>=0) {
-                hotbar.set(currentItem,null);
-                currentItem=-1;
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) { //Temp: Remove current item in the hotbar
+            if (currentItem >= 0) {
+                hotbar.set(currentItem, null);
+                currentItem = -1;
             }
         }
-        for(int slot=0;slot<hotbar.size();slot++){ //Goes through hotbar to draw all items
-            Item item=hotbar.get(slot);
-            if(item!=null){
-                spriteBatch.draw(item.getTexture(),x-27+(slot*11),y-42,8,9);
+        for (int slot = 0; slot < hotbar.size(); slot++) { //Goes through hotbar to draw all items
+            Item item = hotbar.get(slot);
+            if (item != null) {
+                spriteBatch.draw(item.getTexture(), x - 27 + (slot * 11), y - 42, 8, 9);
                 itemFont.getData().setScale(0.5f);
-                itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x-23+(slot*11), y-38);
+                itemFont.setUseIntegerPositions(false);
+                itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x - 23 + (slot * 11), y - 38);
             }
         }
+         for (int inventory = 0; inventory < 5; inventory++) {
+            spriteBatch.draw(Underline, x - 27 + (currentItem * 11), y - 47, 8F, 5F);
+        }
+        
         boolean leftClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         boolean ZeroPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_0);
         boolean OnePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_1);
@@ -103,14 +110,7 @@ public class ItemBar {
     public void addItemToBar(Item itemID,int ItemBarSlot){
         hotbar.set(ItemBarSlot, itemID);
     }
-    public void highlightSlot(ShapeRenderer SlotRenderer){
-        if(currentItem>=0){
-        SlotRenderer.begin(ShapeRenderer.ShapeType.Line);
-        SlotRenderer.setColor(Color.LIGHT_GRAY);
-        SlotRenderer.rect(200+(currentItem*45),15,45,60);
-        SlotRenderer.end();
-        }
-    }
+
     public void drawItems(SpriteBatch spriteBatch){
         for(Item item :hotbar){
             return;
