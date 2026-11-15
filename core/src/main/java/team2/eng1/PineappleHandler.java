@@ -1,20 +1,22 @@
 package team2.eng1;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.utils.Timer;
 
 public class PineappleHandler{
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     GameTimer gameTimer = GameTimer.getInstance();
-    Texture pineappleTexture;
-    Sprite pineappleSprite;
+    Texture pineappleTexture = new Texture(Gdx.files.internal("PineappleGrenade.png"));
+    Texture explosionTexture = new Texture(Gdx.files.internal("PineappleExplosion.png"));
+    Sprite pineappleSprite = new Sprite(pineappleTexture);
     Circle areaOfEffect;
     boolean active;
+    boolean detonate;
     float x;
     float y;
     int count;
@@ -32,6 +34,7 @@ public class PineappleHandler{
         count = 0;
         areaOfEffect = new Circle();
         active = false;
+        detonate = false;
     }
 
     public float getX(){
@@ -73,9 +76,18 @@ public class PineappleHandler{
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    activeFalse();
+                    detonate = true;
+                    pineappleSprite.setTexture(explosionTexture);
                 }
-            }, 1f);
+            }, 0.8f);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    detonate = false;
+                    activeFalse();
+                    pineappleSprite.setTexture(pineappleTexture);
+                }
+            }, 1.1f);
         }
     }
     public void activeFalse(){
@@ -87,8 +99,6 @@ public class PineappleHandler{
 
     public void render(){
         if (active == true) {
-            pineappleTexture = new Texture(Gdx.files.internal("PineappleGrenade.png"));
-            pineappleSprite = new Sprite(pineappleTexture);
             spriteBatch.draw(pineappleSprite, x+8, y, 8, 8);
         }
     }
