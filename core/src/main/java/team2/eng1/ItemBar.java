@@ -13,47 +13,49 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-
 public class ItemBar {
     PlayerActorState playerState = PlayerActorState.getInstance();
-    List<Item> hotbar= new ArrayList<>();
-    int currentItem=0; //no item equipped
+    List<Item> hotbar = new ArrayList<>();
+    int currentItem = 0; // Slot 1 equipped by default
     SpriteBatch spriteBatch = GameState.getInstance().batch;
     BitmapFont itemFont = new BitmapFont();
 
-    public void render(float x, float y){
-        if(hotbar.size()==0) hotbar.add(new Item.PineappleGrenade(3));
+    public void render(float x, float y) {
+        if (hotbar.size() == 0) {
+            hotbar.add(new Item.Peashooter());
+            hotbar.add(new Item.PineappleGrenade(3));
+        }
         Sprite sprite = new Sprite();
         Texture itemBarTexture = new Texture("GooseItemBar.png");
         TextureRegion itemBarRegion = new TextureRegion(itemBarTexture);
-        itemBarRegion.setRegion(1,16 ,64 , 48);
+        itemBarRegion.setRegion(1, 16, 64, 48);
         sprite.setRegion(itemBarRegion);
         sprite.setScale(20f);
 
-        // sprite.setPosition(0,0);
+        spriteBatch.draw(sprite, x - 30, y - 90, 60f, 60f);
 
-        spriteBatch.draw(sprite,x-30, y-90, 60f, 60f);
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)&&(hotbar.size()<5||hotbar.contains(null))){ //Temp: Add an item to the hotbar
-            if(hotbar.contains(null)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (hotbar.size() < 5 || hotbar.contains(null))) { // Temp: Add an item to the hotbar
+            if (hotbar.contains(null)) {
                 hotbar.set(hotbar.indexOf(null), new Item.PineappleGrenade(1));
-            }else{
+            } else {
                 hotbar.add(new Item.PineappleGrenade(1));
             }
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I)){ //Temp: Remove current item in the hotbar
-            if(currentItem>=0) {
-                hotbar.set(currentItem,null);
-                currentItem=-1;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) { // Temp: Remove current item in the hotbar
+            if (currentItem >= 0 && currentItem < hotbar.size()) {
+                hotbar.set(currentItem, null);
+                currentItem = -1;
             }
         }
-        for(int slot=0;slot<hotbar.size();slot++){ //Goes through hotbar to draw all items
-            Item item=hotbar.get(slot);
-            if(item!=null){
-                spriteBatch.draw(item.getTexture(),x-27+(slot*11),y-42,8,9);
+        for (int slot = 0; slot < hotbar.size(); slot++) { // Goes through hotbar to draw all items
+            Item item = hotbar.get(slot);
+            if (item != null) {
+                spriteBatch.draw(item.getTexture(), x - 27 + (slot * 11), y - 42, 8, 9);
                 itemFont.getData().setScale(0.5f);
-                itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x-23+(slot*11), y-38);
+                itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x - 23 + (slot * 11), y - 38);
             }
         }
+
         boolean spacePressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
         boolean ZeroPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_0);
         boolean OnePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_1);
@@ -62,45 +64,53 @@ public class ItemBar {
         boolean FourPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_4);
         boolean FivePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_5);
 
-        if (spacePressed && currentItem!=-1){
+        boolean peashooterSelected = currentItem >= 0
+                && currentItem < hotbar.size()
+                && hotbar.get(currentItem) instanceof Item.Peashooter;
+        Peashooter.getInstance().setEquipped(peashooterSelected);
+
+        if (spacePressed && currentItem >= 0 && currentItem < hotbar.size() && hotbar.get(currentItem) != null) {
             hotbar.get(currentItem).use();
         }
-        if (ZeroPressed){
-            currentItem=-1; //acts as no item equipped
+        if (ZeroPressed) {
+            currentItem = -1; // No item equipped
         }
-        if (OnePressed){
-            currentItem=0;
+        if (OnePressed) {
+            currentItem = 0;
         }
-        if (TwoPressed){
-            currentItem=1;
+        if (TwoPressed) {
+            currentItem = 1;
         }
-        if (ThreePressed){
-            currentItem=2;
+        if (ThreePressed) {
+            currentItem = 2;
         }
-        if (FourPressed){
-            currentItem=3;
+        if (FourPressed) {
+            currentItem = 3;
         }
-        if (FivePressed){
-            currentItem=4;
+        if (FivePressed) {
+            currentItem = 4;
         }
-
     }
-    public int getCurrentItemSlot(){
+
+    public int getCurrentItemSlot() {
         return currentItem;
     }
-    public void addItemToBar(Item itemID,int ItemBarSlot){
+
+    public void addItemToBar(Item itemID, int ItemBarSlot) {
         hotbar.set(ItemBarSlot, itemID);
     }
-    public void highlightSlot(ShapeRenderer SlotRenderer){
-        if(currentItem>=0){
-        SlotRenderer.begin(ShapeRenderer.ShapeType.Line);
-        SlotRenderer.setColor(Color.LIGHT_GRAY);
-        SlotRenderer.rect(200+(currentItem*45),15,45,60);
-        SlotRenderer.end();
+
+    public void highlightSlot(ShapeRenderer SlotRenderer) {
+        if (currentItem >= 0) {
+            SlotRenderer.begin(ShapeRenderer.ShapeType.Line);
+            SlotRenderer.setColor(Color.LIGHT_GRAY);
+            SlotRenderer.rect(200 + (currentItem * 45), 15, 45, 60);
+            SlotRenderer.end();
         }
     }
-    public void drawItems(SpriteBatch spriteBatch){
-        for(Item item :hotbar){
+
+    public void drawItems(SpriteBatch spriteBatch) {
+        for (Item item : hotbar) {
             return;
         }
     }

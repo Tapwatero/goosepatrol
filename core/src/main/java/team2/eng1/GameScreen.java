@@ -81,6 +81,8 @@ public class GameScreen implements Screen {
 
     PineappleHandler pineappleState = PineappleHandler.getInstance();
 
+    Peashooter peashooter = Peashooter.getInstance();
+
     public GameScreen(final GoosePatrol game) {
         this.game = game;
 
@@ -191,6 +193,7 @@ public class GameScreen implements Screen {
         gameCam.position.set((gamePort.getWorldWidth() /2) + playerState.getPosition().x - 75, (gamePort.getWorldHeight() / 2) + playerState.getPosition().y - 25, 0);
 
         gameCam.update();
+        peashooter.update(delta, gamePort, playerState);
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -295,6 +298,8 @@ public class GameScreen implements Screen {
         spriteBatch.end();
         healthBar.draw(shapeRenderer);
         itemBar.highlightSlot(SlotRenderer);
+        shapeRenderer.setProjectionMatrix(gameCam.combined);
+        peashooter.render(shapeRenderer);
     }
 
     @Override
