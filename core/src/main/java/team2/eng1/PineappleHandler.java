@@ -19,11 +19,9 @@ public class PineappleHandler{
     float y;
     int count;
 
-    private static PineappleHandler instance;
+    private static PineappleHandler instance = new PineappleHandler();
+
     public static PineappleHandler getInstance() {
-        if(instance==null){
-            instance = new PineappleHandler();
-        }
         return instance;
     }
 
@@ -35,10 +33,6 @@ public class PineappleHandler{
         active = false;
     }
 
-    public boolean getActive(){
-        if(count<=0) activeFalse();
-        return active;
-    }
     public float getX(){
         return x;
     }
@@ -68,15 +62,20 @@ public class PineappleHandler{
         areaOfEffect = new Circle(x, y, radius);
     }
     public void activeTrue(){
-        if(!active && count>0) count--;
-        active = true;
+        if(!active && count>0) {
+            active = true;
+            count--;
+        }
     }
     public void activeFalse(){
+        if (active == true) {
+            SoundSystem.playSound(SoundSystem.pineappleExplode, 1f, 1f);
+        }
         active = false;
     }
 
     public void render(){
-        if (getActive()) {
+        if (active = true) {
             pineappleTexture = new Texture(Gdx.files.internal("PineappleGrenade.png"));
             pineappleSprite = new Sprite(pineappleTexture);
             spriteBatch.draw(pineappleSprite, x+8, y, 8, 8);
@@ -87,5 +86,9 @@ public class PineappleHandler{
                 }
             }, 1f);
         }
+    }
+
+    public void dispose() {
+        instance = new PineappleHandler();
     }
 }

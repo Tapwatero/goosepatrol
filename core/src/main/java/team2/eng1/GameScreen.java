@@ -276,7 +276,7 @@ public class GameScreen implements Screen {
             busRenderer.render();  
         }
 
-        if (pineappleState.getActive()){
+        if (pineappleState.active == true){
             pineappleState.render();
         }
 
@@ -294,6 +294,7 @@ public class GameScreen implements Screen {
         gameState.dispose();
         playerState.dispose();
         u2BusEvent.dispose();
+        pineappleState.dispose();
         geeseHorde.dispose();
         eventHandler.dispose();
     }

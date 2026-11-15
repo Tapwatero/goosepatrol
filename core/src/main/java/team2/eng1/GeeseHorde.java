@@ -110,9 +110,10 @@ public class GeeseHorde {
                 }
             }
 
-            if(pineappleHandler.getActive()) {
+            if(pineappleHandler.active == true) {
                 if(Intersector.overlaps(pineappleHandler.getAOE(), hordeMember.gooseHitbox)){
                     toRemove.add(hordeMember);
+                    SoundSystem.playSound(SoundSystem.gooseEat, 1f, (float) 1/hordeMember.size);
                 }
             }
 

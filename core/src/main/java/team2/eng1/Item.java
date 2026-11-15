@@ -32,10 +32,13 @@ public abstract class Item {
         }
         @Override
         public void use() {
-            if(!pineappleState.getActive()){
+            if(pineappleState.active == false) {
                 float playerX = playerState.getX();
                 float playerY = playerState.getY();
                 pineappleState.activeTrue();
+                if (pineappleState.active == true) {
+                    SoundSystem.playSound(SoundSystem.pineappleArmed, 1f, 1f);
+                }
                 pineappleState.setX(playerState.getX());
                 pineappleState.setY(playerState.getY());
                 pineappleState.setAOE(playerX, playerY, 25);
