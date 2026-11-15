@@ -65,10 +65,10 @@ public class PineappleHandler{
         areaOfEffect = new Circle(x, y, radius);
     }
     public void activeTrue(){
+        if(!active && count>0) count--;
         active = true;
     }
     public void activeFalse(){
-        if(active && count>0) count--;
         active = false;
     }
 
