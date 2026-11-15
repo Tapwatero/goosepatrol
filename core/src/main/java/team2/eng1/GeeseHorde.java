@@ -128,6 +128,11 @@ public class GeeseHorde {
                 }
             }
 
+            if (hordeMember.health <= 0) {
+                toRemove.add(hordeMember);
+                SoundSystem.playSound(SoundSystem.gooseEat, 1f, (float) 1/hordeMember.size);
+            }
+
             //Another four for loops called per frame. Should be changed to be inline with player collision in GameScreen.
             //Instead of blocking movement in a direciton directly, they use the clamp function to prevent the X/Y from increasing/decreasing as necessary.
             //The movement vector should always be clamped to these values.

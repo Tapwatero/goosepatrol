@@ -6,13 +6,31 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Peashooter {
+public class Peashooter extends Item{   
+    public static boolean equipped;      
+
+@   Override
+    public Texture getTexture() {
+        return new Texture("PineappleGrenade.png");
+    }
+    @Override
+    public void use() {
+    }
+    @Override
+    public int getItemCount(){
+        //It's actually infinite, but 99 gets the idea across while not needing to implement an infinity symbol.
+        return 99;
+    }
+    Peashooter() {
+            super("Peashooter");
+        }
 
     private static class Pea {
         Vector2 position;
@@ -33,8 +51,7 @@ public class Peashooter {
 
     private float cooldownTimer = 0f;
     private final float fireCooldown = 0.25f; 
-    private final float peaSpeed = 140f;      
-    private boolean equipped = true;          
+    private final float peaSpeed = 140f;    
 
     public void update(float delta, Viewport gamePort, PlayerActorState playerState) {
         if (cooldownTimer > 0f) {
@@ -52,6 +69,8 @@ public class Peashooter {
             if (direction.len2() > 0f) {
                 direction.nor();
                 activePeas.add(new Pea(originX, originY, direction, peaSpeed));
+                SoundSystem.playSoundRandom(SoundSystem.peashooterShoot, 1f, 1f);
+                GameState.getInstance().itemsUsed+=1;
                 cooldownTimer = fireCooldown;
             }
         }
@@ -72,6 +91,7 @@ public class Peashooter {
 
             if (hitsWall(pea.hitbox)) {
                 peaIterator.remove();
+                SoundSystem.playSound(SoundSystem.peashooterSplat, 1f, 1f);
                 continue;
             }
 
@@ -79,7 +99,8 @@ public class Peashooter {
             while (gooseIterator.hasNext()) {
                 GeeseActorState goose = gooseIterator.next();
                 if (pea.hitbox.overlaps(goose.gooseHitbox)) {
-                    gooseIterator.remove();
+                    goose.health -= 1;
+                    SoundSystem.playSound(SoundSystem.peashooterSplat, 1f, 1f);
                     peaIterator.remove();
                     break;
                 }

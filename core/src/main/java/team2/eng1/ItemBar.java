@@ -22,7 +22,10 @@ public class ItemBar {
     BitmapFont itemFont = new BitmapFont();
 
     public void render(float x, float y){
-        if(hotbar.size()==0) hotbar.add(new Item.PineappleGrenade(3));
+        if(hotbar.size()==0) {
+            hotbar.add(new Peashooter());
+            hotbar.add(new Item.PineappleGrenade(3));
+        }
         Sprite sprite = new Sprite();
         Texture itemBarTexture = new Texture("GooseItemBar.png");
         TextureRegion itemBarRegion = new TextureRegion(itemBarTexture);
@@ -62,8 +65,17 @@ public class ItemBar {
         boolean FourPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_4);
         boolean FivePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_5);
 
-        if (spacePressed && currentItem!=-1){
+        if (spacePressed && currentItem!=-1 && currentItem < hotbar.size()){
             hotbar.get(currentItem).use();
+        }
+        if (currentItem !=-1 && currentItem < hotbar.size()) {
+            if (currentItem!=-1 && hotbar.get(currentItem) instanceof Peashooter) {
+                Peashooter.equipped = true;
+            } else {
+                Peashooter.equipped = false;
+            }
+        } else {
+            Peashooter.equipped = false;
         }
         if (ZeroPressed){
             currentItem=-1; //acts as no item equipped

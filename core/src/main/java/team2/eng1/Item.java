@@ -17,6 +17,8 @@ public abstract class Item {
 
     public abstract int getItemCount();//The number of the item in inventory
 
+    
+
     public static class PineappleGrenade extends Item{
         PineappleHandler pineappleState = PineappleHandler.getInstance();
         PlayerActorState playerState = PlayerActorState.getInstance();

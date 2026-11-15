@@ -36,7 +36,7 @@ public class SoundSystem {
     public static Sound gooseWing2;
     public static Sound peashooterShoot1;
     public static Sound peashooterShoot2;
-    public static Sound peashooterSplat1;
+    public static Sound peashooterSplat;
     public static Sound pineappleArmed;
     public static Sound pineappleExplode;
     public static Music gooseHorde1;
@@ -88,7 +88,7 @@ public class SoundSystem {
         // Peashooter sounds are collected here
         peashooterShoot1 = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_shoot_1.ogg"));
         peashooterShoot2 = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_shoot_2.ogg"));
-        peashooterSplat1 = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_splat_1.ogg"));
+        peashooterSplat = Gdx.audio.newSound(Gdx.files.internal("sounds/item_peashooter_splat_1.ogg"));
 
         // Pineapple Grenade sounds are collected here
         pineappleArmed = Gdx.audio.newSound(Gdx.files.internal("sounds/item_pineapple_armed_1.ogg"));
@@ -268,7 +268,7 @@ public class SoundSystem {
         gooseWing2.dispose();
         peashooterShoot1.dispose();
         peashooterShoot2.dispose();
-        peashooterSplat1.dispose();
+        peashooterSplat.dispose();
         pineappleArmed.dispose();
         pineappleExplode.dispose();
         gooseHorde1.dispose();
