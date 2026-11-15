@@ -121,7 +121,7 @@ public class GeeseHorde {
 
             //In a similar vein to the last one, they are eating the pineapple from the pineapple grenade. The "grenade" part of the name is a pun and nothing more.
             //The geese are safe and nonviolence is achieved.
-            if(pineappleHandler.active == true) {
+            if(pineappleHandler.detonate == true) {
                 if(Intersector.overlaps(pineappleHandler.getAOE(), hordeMember.gooseHitbox)){
                     toRemove.add(hordeMember);
                     SoundSystem.playSound(SoundSystem.gooseEat, 1f, (float) 1/hordeMember.size);
