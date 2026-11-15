@@ -22,6 +22,7 @@ public class EventHandler {
         if (longBoiTriggered == false) {
             geeseHorde.spawnLongBoi();
             longBoiTriggered = true;
+            GameState.getInstance().eventsActivated += 1;
         }
     }
 
@@ -29,11 +30,11 @@ public class EventHandler {
         if (u2BusTriggered == false) {
             u2BusEvent.spawnU2Bus();
             u2BusTriggered = true;
+            GameState.getInstance().eventsActivated += 1;
         }
     }
 
     public void dispose() {
-        u2BusEvent.dispose();
         instance = new EventHandler();
     }
 }

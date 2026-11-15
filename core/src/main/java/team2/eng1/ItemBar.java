@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import sun.security.util.Length;
 
 
 public class ItemBar {
@@ -98,7 +97,7 @@ public class ItemBar {
     }
     public void drawItems(SpriteBatch spriteBatch){
         for(Item item :hotbar){
-
+            return;
         }
     }
 }

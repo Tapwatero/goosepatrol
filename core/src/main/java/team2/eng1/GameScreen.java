@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
     ShapeRenderer shapeRenderer;
     ShapeRenderer SlotRenderer;
+
     private TiledMapTileLayer logic;
 
     public static int mapWidth;
@@ -66,6 +67,8 @@ public class GameScreen implements Screen {
 
     public boolean paused = false;
     private int random = 0;
+
+    GameState gameState = GameState.getInstance();
 
     GeeseHorde geeseHorde = GeeseHorde.getInstance();
 
@@ -281,9 +284,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        gameState.dispose();
         playerState.dispose();
-        eventHandler.dispose();
+        u2BusEvent.dispose();
         geeseHorde.dispose();
+        eventHandler.dispose();
     }
 
     @Override

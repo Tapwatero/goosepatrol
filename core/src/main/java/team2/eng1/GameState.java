@@ -6,7 +6,7 @@ public class GameState  {
     public  SpriteBatch batch;
     public  int itemsUsed;
     public  int eventsActivated;
-    private static final GameState instance  = new GameState();
+    private static GameState instance  = new GameState();
 
     GameState() {
         this.batch = new SpriteBatch();
@@ -16,5 +16,9 @@ public class GameState  {
 
     public static GameState getInstance() {
         return instance;
+    }
+
+    public void dispose() {
+        instance = new GameState();
     }
 }
