@@ -13,6 +13,8 @@ public abstract class Item {
     public abstract void use();//The item's effect to be triggered by input
 
     public static class PineappleGrenade extends Item{
+        PineappleState pineappleState = PineappleState.getInstance();
+        PlayerActorState playerState = PlayerActorState.getInstance();
 
         PineappleGrenade() {
             super("PineappleGrenade");
@@ -20,11 +22,13 @@ public abstract class Item {
 
         @Override
         public Texture getTexture() {
-            return new Texture("libgdx.png");
+            return new Texture("PineappleGrenade.png");
         }
         @Override
         public void use() {
-
+            pineappleState.activeTrue();
+            pineappleState.setX(playerState.getX());
+            pineappleState.setY(playerState.getY());
         }
     }
 }
