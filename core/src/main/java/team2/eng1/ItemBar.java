@@ -59,6 +59,10 @@ public class ItemBar {
                 itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x - 23 + (slot * 11), y - 38);
             }
         }
+         for (int inventory = 0; inventory < 5; inventory++) {
+            spriteBatch.draw(Underline, x - 30 + (currentItem * 11), y - 45, 11F, 0.5F);
+        }
+        
         boolean leftClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         boolean ZeroPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_0);
         boolean OnePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_1);
