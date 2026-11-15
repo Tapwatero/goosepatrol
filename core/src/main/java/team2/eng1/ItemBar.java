@@ -57,7 +57,7 @@ public class ItemBar {
                 itemFont.draw(spriteBatch, String.format("%d", item.getItemCount()), x-23+(slot*11), y-38);
             }
         }
-        boolean spacePressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+        boolean leftClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         boolean ZeroPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_0);
         boolean OnePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_1);
         boolean TwoPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_2);
@@ -65,7 +65,7 @@ public class ItemBar {
         boolean FourPressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_4);
         boolean FivePressed = Gdx.input.isKeyJustPressed(Input.Keys.NUM_5);
 
-        if (spacePressed && currentItem!=-1 && currentItem < hotbar.size()){
+        if (leftClickPressed && currentItem!=-1 && currentItem < hotbar.size()){
             hotbar.get(currentItem).use();
         }
         if (currentItem !=-1 && currentItem < hotbar.size()) {
